@@ -2,7 +2,7 @@ import sbt._
 import Keys._
 import play.Project._
 
-//import com.tuplejump.sbt.yeoman._
+import com.tuplejump.sbt.yeoman._
 
 object ApplicationBuild extends Build {
 
@@ -27,11 +27,12 @@ object ApplicationBuild extends Build {
     // "group" % "artifact" % "version"
   )
 
+  val customSettings = Seq(scalaVersion := "2.10.0",
+    licenses := Seq("Apache License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0"))) ++
+    Yeoman.yeomanSettings
+
   val main = play.Project(appName, appVersion, appDependencies).settings(
-    Seq(scalaVersion := "2.10.0",
-      licenses := Seq("Apache License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0"))): _*
-      //++
-      //Yeoman.yeomanSettings: _*
+    customSettings: _*
   )
 
 }
