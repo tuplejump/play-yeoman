@@ -1,0 +1,13 @@
+@(message: String)
+
+@main("Welcome to Play Framework") {
+
+    <script type='text/javascript' src='@routes.Assets.at("javascripts/index.min.js")'></script>
+    
+    <div class="well">
+        <h1>@message</h1>
+    </div>
+
+    <button id="getMessageButton">Get JSON Message</button>
+
+}
