@@ -26,6 +26,8 @@ object Yeoman extends Plugin {
   val yeomanDirectory = SettingKey[File]("yeoman-directory")
 
   val yeomanSettings: Seq[Project.Setting[_]] = Seq(
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.0.3-SNAPSHOT" intransitive()),
+
     // Turn off play's internal less compiler
     lessEntryPoints := Nil,
 
@@ -38,7 +40,7 @@ object Yeoman extends Plugin {
     },
 
     // Add the views to the dist
-    playAssetsDirectories <+= (yeomanDirectory in Compile)(base => base / "app" / "views"),
+    playAssetsDirectories <+= (yeomanDirectory in Compile)(base => base / "app"),
 
 
     // Start grunt on play run
