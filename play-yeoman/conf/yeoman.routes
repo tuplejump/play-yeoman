@@ -1,0 +1,7 @@
+# Routes
+# This file defines all application yeoman.routes (Higher priority yeoman.routes first)
+# ~~~~
+
+# Home page
+GET      /*file                                                controllers.Yeoman.at(path = "/ui/app", file)
+GET      /                                                     controllers.Yeoman.index

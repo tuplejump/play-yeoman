@@ -26,7 +26,7 @@ object Yeoman extends Plugin {
   val yeomanDirectory = SettingKey[File]("yeoman-directory")
 
   val yeomanSettings: Seq[Project.Setting[_]] = Seq(
-    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.0.3-SNAPSHOT" intransitive()),
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.0.8-SNAPSHOT" intransitive()),
 
     // Turn off play's internal less compiler
     lessEntryPoints := Nil,
@@ -36,7 +36,7 @@ object Yeoman extends Plugin {
 
     // Where does the UI live?
     yeomanDirectory <<= (baseDirectory in Compile) {
-      _ / "yeoman"
+      _ / "ui"
     },
 
     // Add the views to the dist
@@ -66,8 +66,7 @@ object Yeoman extends Plugin {
           "grunt",
           "bower",
           "yo",
-          "npm",
-          "reset"
+          "npm"
         ).map(cmd(_, base))
     }
   )
