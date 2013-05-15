@@ -14,6 +14,7 @@ The play plugin in turn provides some routes to serve the angualr web app. This 
 To start using this plugin,
 
 1. Add the plugin to your play project by adding these lines to  project/plugins.sbt,
+
 ```
 
 resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
@@ -22,7 +23,9 @@ resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositori
 addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.1.5-SNAPSHOT")
 
 ```
+
 2. Add the yeoman project settings to your play project
+
 ```
   import com.tuplejump.sbt.yeoman._
 
@@ -46,6 +49,7 @@ addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.1.5-SNAPSHOT")
 5. Now you, use npm, yo, grunt and bower commands from the SBT console. They will always run the ui folder.
 
 6. Run the following line to create your angular frontend,
+
 
 ```
 
