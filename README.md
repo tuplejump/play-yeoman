@@ -30,7 +30,7 @@ import com.tuplejump.sbt.yeoman._
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add your own project settings here
-    Yeoman.yeomanSetting: _*
+    Yeoman.yeomanSettings: _*
   )
 
 ```
