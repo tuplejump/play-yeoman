@@ -1,8 +1,53 @@
 play-yeoman
 ===========
 
-Play + Yeoman integration sbt and play plugins
+Play + Yeoman integration sbt and play plugins. Inspired and copied to quite some extent from,
+https://github.com/leon/play-grunt-angular-prototype
 
+How to use it?
+==============
+
+play-yeoman provides 2 plugins one for SBT and the other for play. The SBT plugin provides the necessary settings and also adds the play plugin to the project's dependencies.
+
+The play plugin in turn provides some routes to serve the angualr web app. This plugin assumes you have npm, yeoman, grunt-cli and bower installed.
+
+To start using this plugin,
+
+1. Add the plugin to your play project by adding these lines to  project/plugins.sbt,
+```
+
+resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
+
+
+addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.1.5-SNAPSHOT")
+
+```
+2. Add the yeoman project settings to your play project
+```
+import com.tuplejump.sbt.yeoman._
+
+//Existing code...
+
+  val main = play.Project(appName, appVersion, appDependencies).settings(
+    // Add your own project settings here
+    Yeoman.yeomanSetting: _*
+  )
+
+```
+
+3. Create a folder called ui in the project route
+
+4. Start sbt
+
+5. Now you, use npm, yo, grunt and bower commands from the SBT console. They will always run the ui folder.
+
+6. Run the following line to create your angular frontend,
+
+```
+
+yo angular
+
+```
 
 Licence
 =======
