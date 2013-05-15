@@ -24,14 +24,18 @@ addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.1.5-SNAPSHOT")
 ```
 2. Add the yeoman project settings to your play project
 ```
-import com.tuplejump.sbt.yeoman._
+  import com.tuplejump.sbt.yeoman._
 
-//Existing code...
+  //Existing code...
+
+  val appSettings = settings ++ Yeoman.yeomanSettings ++ Seq(resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/")
+
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add your own project settings here
-    Yeoman.yeomanSettings: _*
+    appSettings: _*
   )
+ 
 
 ```
 
