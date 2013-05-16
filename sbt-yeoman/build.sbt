@@ -4,7 +4,7 @@ organization := "com.tuplejump"
 
 sbtPlugin := true
 
-version := "0.1.5-SNAPSHOT"
+version := "0.1.9-SNAPSHOT"
 
 scalaVersion := "2.9.2"
 
@@ -48,7 +48,7 @@ publishArtifact in Test := false
 pomIncludeRepository := { _ => false }
 
 pomExtra := (
-  <url>http://jsuereth.com/scala-arm</url>
+  <url>https://github.com/tuplejump/play-yeoman</url>
   <scm>
     <url>git@github.com:tuplejump/play-yeoman.git</url>
     <connection>scm:git:git@github.com:tuplejump/play-yeoman.git</connection>
@@ -57,7 +57,7 @@ pomExtra := (
     <developer>
       <id>milliondreams</id>
       <name>Rohit Rai</name>
-      <url>http://mytechrantings.blogspot.com</url>
+      <url>https://twitter.com/milliondreams</url>
     </developer>
   </developers>)
 

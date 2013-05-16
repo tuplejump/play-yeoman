@@ -3,5 +3,5 @@
 # ~~~~
 
 # Home page
-GET      /*file                                                controllers.Yeoman.at(path = "/ui/app", file)
-GET      /                                                     controllers.Yeoman.index
+GET      /*file                                                com.tuplejump.playYeoman.Yeoman.at(path = "/ui/app", file)
+GET      /                                                     com.tuplejump.playYeoman.Yeoman.index

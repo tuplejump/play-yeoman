@@ -5,7 +5,7 @@ import play.Project._
 object ApplicationBuild extends Build {
 
   val appName = "play-yeoman"
-  val appVersion = "0.1.0-SNAPSHOT"
+  val appVersion = "0.1.1-SNAPSHOT"
 
   val appDependencies = Seq(
     // Add your project dependencies here,
@@ -22,27 +22,30 @@ object ApplicationBuild extends Build {
     organizationHomepage := Some(new java.net.URL("http://www.tuplejump.com")),
     licenses := Seq("Apache License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
     publishMavenStyle := true,
-    publishTo <<= version { (v: String) =>
-      val nexus = "https://oss.sonatype.org/"
-      if (v.trim.endsWith("SNAPSHOT"))
-        Some("snapshots" at nexus + "content/repositories/snapshots")
-      else
-        Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+    publishTo <<= version {
+      (v: String) =>
+        val nexus = "https://oss.sonatype.org/"
+        if (v.trim.endsWith("SNAPSHOT"))
+          Some("snapshots" at nexus + "content/repositories/snapshots")
+        else
+          Some("releases" at nexus + "service/local/staging/deploy/maven2")
     },
     publishArtifact in Test := false,
-    pomIncludeRepository := { _ => false },
+    pomIncludeRepository := {
+      _ => false
+    },
     pomExtra := (
-      <url>http://jsuereth.com/scala-arm</url>
-      <scm>
-        <url>git@github.com:tuplejump/play-yeoman.git</url>
-        <connection>scm:git:git@github.com:tuplejump/play-yeoman.git</connection>
-      </scm>
-      <developers>
-        <developer>
-          <id>milliondreams</id>
-          <name>Rohit Rai</name>
-          <url>http://mytechrantings.blogspot.com</url>
-        </developer>
-      </developers>)
+      <url>https://github.com/tuplejump/play-yeoman</url>
+        <scm>
+          <url>git@github.com:tuplejump/play-yeoman.git</url>
+          <connection>scm:git:git@github.com:tuplejump/play-yeoman.git</connection>
+        </scm>
+        <developers>
+          <developer>
+            <id>milliondreams</id>
+            <name>Rohit Rai</name>
+            <url>https://twitter.com/milliondreams</url>
+          </developer>
+        </developers>)
   )
 }
