@@ -20,7 +20,7 @@ To start using this plugin,
 resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 
 
-addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.1.5-SNAPSHOT")
+addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.1.9-SNAPSHOT")
 
 ```
 
@@ -31,7 +31,7 @@ addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.1.5-SNAPSHOT")
 
   //Existing code...
 
-  val appSettings = settings ++ Yeoman.yeomanSettings ++ Seq(resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/")
+  val appSettings = Yeoman.yeomanSettings ++ Seq(resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/")
 
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
