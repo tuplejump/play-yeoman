@@ -26,7 +26,7 @@ object Yeoman extends Plugin {
   val yeomanDirectory = SettingKey[File]("yeoman-directory")
 
   val yeomanSettings: Seq[Project.Setting[_]] = Seq(
-    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.1.1-SNAPSHOT" intransitive()),
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.1.3-SNAPSHOT" intransitive()),
 
     // Turn off play's internal less compiler
     lessEntryPoints := Nil,
@@ -47,7 +47,7 @@ object Yeoman extends Plugin {
     playOnStarted <+= yeomanDirectory {
       base =>
         (address: InetSocketAddress) => {
-          Grunt.process = Some(Process("grunt watch", base).run)
+          Grunt.process = Some(Process("grunt server", base).run)
         }: Unit
     },
 
