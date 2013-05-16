@@ -20,7 +20,7 @@ To start using this plugin,
 resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 
 
-addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.1.9-SNAPSHOT")
+addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.2.1-SNAPSHOT")
 
 ```
 
