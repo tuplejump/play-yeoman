@@ -25,8 +25,10 @@ import scala.Some
 object Yeoman extends Plugin {
   val yeomanDirectory = SettingKey[File]("yeoman-directory")
 
+  val gruntTask = TaskKey[Unit]("grunt", "runs grunt build")
+
   val yeomanSettings: Seq[Project.Setting[_]] = Seq(
-    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.1.3-SNAPSHOT" intransitive()),
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.5.0" intransitive()),
 
     // Turn off play's internal less compiler
     lessEntryPoints := Nil,
@@ -40,8 +42,9 @@ object Yeoman extends Plugin {
     },
 
     // Add the views to the dist
-    playAssetsDirectories <+= (yeomanDirectory in Compile)(base => base / "app"),
+    playAssetsDirectories <+= (yeomanDirectory in Compile)(base => base / "dist"),
 
+    playStage <<= (playStage in Compile) dependsOn (gruntTask),
 
     // Start grunt on play run
     playOnStarted <+= yeomanDirectory {
@@ -72,6 +75,7 @@ object Yeoman extends Plugin {
   )
 
   private def cmd(name: String, base: File): Command = {
+    if (!base.exists()) (base.mkdirs())
     Command.args(name, "<" + name + "-command>") {
       (state, args) =>
         Process(name :: args.toList, base) !<;
