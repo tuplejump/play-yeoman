@@ -1,61 +1,112 @@
 play-yeoman
 ===========
 
+**play-yeoman** is a sbt+play plugin that brings the streamlined frontend development workflow and optimized build system of [yeoman](http://yeoman.io) to [Play 2.0](http://playframework.org).
+
+In this approach, you would use play for developing the application backend/services and develop the frontend/ui using the yeoman toolchain, all in a totally integrated workflow and single unified console.
+
 Play + Yeoman integration sbt and play plugins. Inspired and copied to quite some extent from,
 https://github.com/leon/play-grunt-angular-prototype
 
+
+
 How to use it?
-==============
+--------------
 
-play-yeoman provides 2 plugins one for SBT and the other for play. The SBT plugin provides the necessary settings and also adds the play plugin to the project's dependencies.
+### Prerequisites
 
-The play plugin in turn provides some routes to serve the angualr web app. This plugin assumes you have npm, yeoman, grunt-cli and bower installed.
+* This assumes that you have [npm](https://npmjs.org/), [yo](http://yeoman.io), [grunt](http://gruntjs.com/) and [bower](http://bower.io/) installed.
 
-To start using this plugin,
+* If you want to use [LiveReload](http://livereload.com/), you should install the [LiveReload plugin](http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-)  for your browser.
 
-1. Add the plugin to your play project by adding these lines to  project/plugins.sbt,
+### Let's get started,
+
+1. Create a new play project or open an existing play project
+
+2. Add the yeoman sbt plugin to the project. Edit project/plugins.sbt to add the following line,
+
+```
+addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.5.0")
 
 ```
 
-resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
-
-
-addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.5.0-SNAPSHOT")
+3. Import Yeoman classes in the project build adding the following import to project/Build.scala,
 
 ```
 
-2. Add the yeoman project settings to your play project
+import com.tuplejump.sbt.yeoman.Yeoman
 
 ```
-  import com.tuplejump.sbt.yeoman._
 
-  //Existing code...
+4. In the same file, add the yeoman settings to your Play project like this,
 
-  val appSettings = Yeoman.yeomanSettings ++ Seq(resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/")
-
-
+```
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add your own project settings here
-    appSettings: _*
+    Yeoman.yeomanSettings : _*
   )
- 
 
 ```
 
-3. Create a folder called ui in the project folder
+5. Add yeoman routes to the project, appending the following line in conf/routes files,
 
-4. Start sbt
-
-5. Now you, use npm, yo, grunt and bower commands from the SBT console. They will always run the ui folder.
-
-6. Run the following line to create your angular frontend,
-
+```
+->	/ui			  yeoman.Routes
 
 ```
 
-yo angular
+6. Start play/sbt in your project folder,
 
 ```
+user yo-demo> sbt
+
+```
+
+7. Update the project to pull in the new dependencies,
+
+```
+[yo-demo] update
+
+```
+
+8. Generate the yeoman application
+
+```
+[yo-demo] yo angular
+
+```
+
+9. Edit the Gruntfile.js to disable the Yeoman "connect" server as we will be using play to serve our application, This can be done by commenting out the relevant line in the server task towards the end of the file,
+
+```
+  grunt.registerTask('server', [
+    'clean:server',
+    'coffee:dist',
+    'compass:server',
+    'livereload-start',
+    //'connect:livereload',	//THIS LINE SHOULD BE COMMENTED or REMOVED
+    'open',
+    'watch'
+  ]);
+
+```
+
+10. Run your play application,
+
+```
+[yo-demo] run
+
+```
+
+11. Click on the liveReload plugin in the browser to connect and navigate to http://localhost:9000/ui
+
+### Taking it to production
+
+The process to put your app in production remains the same as you do today with any play application, except for one minor change. We need to run the yeoman(grunt) build before staging/packaging the app.
+
+So if you deploy an staged app, instead of `sbt stage`, run `sbt grunt stage`.
+In case you build a packaged dist, instead of `sbt dist`, run `sbt grunt dist`.
+
 
 Licence
 =======
