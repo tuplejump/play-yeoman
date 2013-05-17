@@ -21,16 +21,16 @@ How to use it?
 
 ### Let's get started,
 
-1. Create a new play project or open an existing play project
+1) Create a new play project or open an existing play project
 
-2. Add the yeoman sbt plugin to the project. Edit project/plugins.sbt to add the following line,
+2) Add the yeoman sbt plugin to the project. Edit project/plugins.sbt to add the following line,
 
 ```
 addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.5.0")
 
 ```
 
-3. Import Yeoman classes in the project build adding the following import to project/Build.scala,
+3) Import Yeoman classes in the project build adding the following import to project/Build.scala,
 
 ```
 
@@ -38,7 +38,7 @@ import com.tuplejump.sbt.yeoman.Yeoman
 
 ```
 
-4. In the same file, add the yeoman settings to your Play project like this,
+4) In the same file, add the yeoman settings to your Play project like this,
 
 ```
   val main = play.Project(appName, appVersion, appDependencies).settings(
@@ -48,35 +48,35 @@ import com.tuplejump.sbt.yeoman.Yeoman
 
 ```
 
-5. Add yeoman routes to the project, appending the following line in conf/routes files,
+5) Add yeoman routes to the project, appending the following line in conf/routes files,
 
 ```
 ->	/ui			  yeoman.Routes
 
 ```
 
-6. Start play/sbt in your project folder,
+6) Start play/sbt in your project folder,
 
 ```
 user yo-demo> sbt
 
 ```
 
-7. Update the project to pull in the new dependencies,
+7) Update the project to pull in the new dependencies,
 
 ```
 [yo-demo] update
 
 ```
 
-8. Generate the yeoman application
+8) Generate the yeoman application
 
 ```
 [yo-demo] yo angular
 
 ```
 
-9. Edit the Gruntfile.js to disable the Yeoman "connect" server as we will be using play to serve our application, This can be done by commenting out the relevant line in the server task towards the end of the file,
+9) Edit the Gruntfile.js to disable the Yeoman "connect" server as we will be using play to serve our application, This can be done by commenting out the relevant line in the server task towards the end of the file,
 
 ```
   grunt.registerTask('server', [
@@ -91,14 +91,14 @@ user yo-demo> sbt
 
 ```
 
-10. Run your play application,
+10) Run your play application,
 
 ```
 [yo-demo] run
 
 ```
 
-11. Click on the liveReload plugin in the browser to connect and navigate to http://localhost:9000/ui
+11) Click on the liveReload plugin in the browser to connect and navigate to http://localhost:9000/ui
 
 ### Taking it to production
 
