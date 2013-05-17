@@ -25,8 +25,6 @@ import scala.Some
 object Yeoman extends Plugin {
   val yeomanDirectory = SettingKey[File]("yeoman-directory")
 
-  val gruntTask = TaskKey[Unit]("grunt", "runs grunt build")
-
   val yeomanSettings: Seq[Project.Setting[_]] = Seq(
     libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.5.0" intransitive()),
 
@@ -43,8 +41,6 @@ object Yeoman extends Plugin {
 
     // Add the views to the dist
     playAssetsDirectories <+= (yeomanDirectory in Compile)(base => base / "dist"),
-
-    playStage <<= (playStage in Compile) dependsOn (gruntTask),
 
     // Start grunt on play run
     playOnStarted <+= yeomanDirectory {

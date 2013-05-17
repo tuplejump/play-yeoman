@@ -35,7 +35,6 @@ object ApplicationBuild extends Build {
       _ => false
     },
     pomExtra := (
-      <url>https://github.com/tuplejump/play-yeoman</url>
         <scm>
           <url>git@github.com:tuplejump/play-yeoman.git</url>
           <connection>scm:git:git@github.com:tuplejump/play-yeoman.git</connection>
