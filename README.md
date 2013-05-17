@@ -42,7 +42,7 @@ addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.2.1-SNAPSHOT")
 
 ```
 
-3. Create a folder called ui in the project route
+3. Create a folder called ui in the project folder
 
 4. Start sbt
 
