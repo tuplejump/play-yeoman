@@ -25,7 +25,6 @@ object Yeoman extends Controller {
   */
   def extAssetHandler(file: String) = {
     val f = new File("ui/.tmp", file)
-    play.Logger.info("I'm here!")
     if(f.exists)
       ExternalAssets.at("ui/.tmp", file)
     else
