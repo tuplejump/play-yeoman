@@ -26,7 +26,7 @@ object Yeoman extends Plugin {
   val yeomanDirectory = SettingKey[File]("yeoman-directory")
 
   val yeomanSettings: Seq[Project.Setting[_]] = Seq(
-    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.5.0" intransitive()),
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.5.1-SNAPSHOT" intransitive()),
 
     // Turn off play's internal less compiler
     lessEntryPoints := Nil,
