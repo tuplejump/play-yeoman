@@ -16,18 +16,19 @@ object Yeoman extends Controller {
       Redirect((request.path + "/index.html").replace("//", "/"))
   }
 
-  //This is only used in dev mode. In production the styles files is `someidentifier`.main.css
-  def style = Action {
-    //if(Play.isDev)
-    Ok.sendFile(new File("ui/.tmp/styles/main.css")).as(MimeTypes.forFileName("main.css").getOrElse("text/css"))
-  }
-
   def assetHandler(file: String) = {
     Assets.at("/ui/dist", file)
   }
 
+  /**
+  * Serve either compiled files (from .tmp) if they exist, or otherwise from app.
+  */
   def extAssetHandler(file: String) = {
-    ExternalAssets.at("ui/app", file)
+    val f = new File("ui/.tmp", file)
+    if(f.exists)
+      ExternalAssets.at("ui/.tmp", file)
+    else
+      ExternalAssets.at("ui/app", file)
   }
 
   lazy val atHandler = if (Play.isProd) assetHandler(_: String) else extAssetHandler(_: String)
