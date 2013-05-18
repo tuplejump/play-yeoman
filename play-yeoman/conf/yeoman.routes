@@ -3,7 +3,6 @@
 # ~~~~
 
 # Home page
-GET      /styles/main.css                                      com.tuplejump.playYeoman.Yeoman.style
 GET      /*file                                                com.tuplejump.playYeoman.Yeoman.at(file)
 GET      /                                                     com.tuplejump.playYeoman.Yeoman.index
 
