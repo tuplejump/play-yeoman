@@ -8,10 +8,19 @@ In this approach, you would use play for developing the application backend/serv
 Play + Yeoman integration sbt and play plugins. Inspired and copied to quite some extent from,
 https://github.com/leon/play-grunt-angular-prototype
 
+Support
+=======
+
+If you face any issues using this plugin, please feel free to report to <opensource [at] tuplejump [dot] com> or shout out at twitter mentioning @tuplejump or @milliondreams.
+You can also create a issue in the github issue tracker.
+
+If you found a bug and fixed it, please do raise a pull request, all users will appreciate that.
+
+If you want some new feature to be implemented, please mail us.
 
 
 How to use it?
---------------
+==============
 
 ### Prerequisites
 
