@@ -1,0 +1,6 @@
++ Automatically create the 'ui' directory if not present
++ Provide yo, grunt and bower as sbt commands
++ Handle hosting .tmp in development and dist in production
+
+Thanks to [Martin Grotzke](https://github.com/magro) and [Juha Litola](https://github.com/jlitola) for commiting to this release!
+ 
