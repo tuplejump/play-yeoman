@@ -35,7 +35,7 @@ How to use it?
 2) Add the yeoman sbt plugin to the project. Edit project/plugins.sbt to add the following line,
 
 ```
-addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.5.0")
+addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.5.1")
 
 ```
 
@@ -60,7 +60,19 @@ import com.tuplejump.sbt.yeoman.Yeoman
 5) Add yeoman routes to the project, appending the following line in conf/routes files,
 
 ```
-->	/ui			  yeoman.Routes
+
+GET     /ui                         com.tuplejump.playYeoman.Yeoman.index
+
+->	    /ui/                    yeoman.Routes
+
+
+```
+
+Optionally, you can also redirect your root url,
+
+```
+
+GET     /                           com.tuplejump.playYeoman.Yeoman.redirectRoot(base="/ui/")
 
 ```
 
@@ -107,7 +119,7 @@ user yo-demo> sbt
 
 ```
 
-11) Click on the liveReload plugin in the browser to connect and navigate to http://localhost:9000/ui
+11) Click on the liveReload plugin in the browser to connect and navigate to http://localhost:9000/ui/
 
 ### Taking it to production
 
