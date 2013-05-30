@@ -35,7 +35,7 @@ How to use it?
 2) Add the yeoman sbt plugin to the project. Edit project/plugins.sbt to add the following line,
 
 ```
-addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.5.1")
+addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.5.2")
 
 ```
 
@@ -61,7 +61,7 @@ import com.tuplejump.sbt.yeoman.Yeoman
 
 ```
 
-GET     /ui                         com.tuplejump.playYeoman.Yeoman.index
+GET     /ui                     com.tuplejump.playYeoman.Yeoman.index
 
 ->	    /ui/                    yeoman.Routes
 
