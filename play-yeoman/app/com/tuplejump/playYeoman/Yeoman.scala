@@ -21,14 +21,14 @@ object Yeoman extends Controller {
   }
 
   /**
-  * Serve either compiled files (from .tmp) if they exist, or otherwise from app.
-  */
+   * Serve either compiled files (from .tmp) if they exist, or otherwise from app.
+   */
   def extAssetHandler(file: String) = {
     val f = new File("ui/.tmp", file)
-    if(f.exists)
-      ExternalAssets.at("ui/.tmp", file)
+    if (f.exists)
+      DevAssets.at("ui/.tmp", file, CACHE_CONTROL -> "no-store")
     else
-      ExternalAssets.at("ui/app", file)
+      DevAssets.at("ui/app", file, CACHE_CONTROL -> "no-store")
   }
 
   lazy val atHandler = if (Play.isProd) assetHandler(_: String) else extAssetHandler(_: String)
@@ -37,4 +37,16 @@ object Yeoman extends Controller {
     atHandler(file)
   }
 
+}
+
+object DevAssets extends Controller {
+  def at(rootPath: String, file: String, headers: (String, String)*): Action[AnyContent] = Action {
+    val fileToServe = new File(Play.application.getFile(rootPath), file)
+
+    if (fileToServe.exists) {
+      Ok.sendFile(fileToServe, inline = true).withHeaders(headers: _*)
+    } else {
+      NotFound
+    }
+  }
 }
