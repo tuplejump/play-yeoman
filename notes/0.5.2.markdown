@@ -1,0 +1,3 @@
++ Disables web application cache in development
++ Supports good old "/ui/" instead of the "/ui/index.html"
++ Adding redrect root handler to redirect your application's / 
