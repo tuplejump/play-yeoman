@@ -11,7 +11,7 @@ https://github.com/leon/play-grunt-angular-prototype
 Support
 =======
 
-If you face any issues using this plugin, please feel free to report to <opensource [at] tuplejump [dot] com> or shout out at twitter mentioning @tuplejump or @milliondreams.
+If you face any issues using this plugin, please feel free to report to | opensource [at] tuplejump [dot] com | or shout out at twitter mentioning @tuplejump or @milliondreams.
 You can also create a issue in the github issue tracker.
 
 If you found a bug and fixed it, please do raise a pull request, all users will appreciate that.
