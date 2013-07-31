@@ -32,21 +32,7 @@ object Yeoman extends Controller {
     Assets.at("/ui/dist", file)
   }
 
-  /**
-   * Serve either compiled files (from .tmp) if they exist, or otherwise from app.
-   */
-  def extAssetHandler(file: String) = {
-    val tmpPath = "ui/.tmp"
-    val appPath = "ui/app"
-
-    val f = new File(tmpPath, file)
-    if (f.exists)
-      DevAssets.at(tmpPath, file, CACHE_CONTROL -> "no-store")
-    else
-      DevAssets.at(appPath, file, CACHE_CONTROL -> "no-store")
-  }
-
-  lazy val atHandler = if (Play.isProd) assetHandler(_: String) else extAssetHandler(_: String)
+  lazy val atHandler = if (Play.isProd) assetHandler(_: String) else DevAssets.assetHandler(_: String)
 
   def at(file: String): Action[AnyContent] = {
     atHandler(file)
@@ -55,12 +41,22 @@ object Yeoman extends Controller {
 }
 
 object DevAssets extends Controller {
-  def at(rootPath: String, file: String, headers: (String, String)*): Action[AnyContent] = Action {
-    val fileToServe = new File(Play.application.getFile(rootPath), file)
-    if (fileToServe.exists) {
-      Ok.sendFile(fileToServe, inline = true).withHeaders(headers: _*)
-    } else {
-      NotFound
-    }
+  // paths to the grunt compile directory or else the application directory, in order of importance
+  val basePaths = List(Play.application.getFile("ui/.tmp"), Play.application.getFile("ui/app"))
+
+  /**
+   * Construct the temporary and real path under the application.
+   *
+   * The play application path is prepended to the full path, to make sure the
+   * absolute path is in the correct SBT sub-project.
+   */
+  def assetHandler(fileName: String): Action[AnyContent] = Action {
+    val targetPaths = basePaths.view map { new File(_, fileName) } // generate a non-strict (lazy) list of the full paths
+
+    // take the files that exist and generate the response that they would return
+    val responses = targetPaths filter { _.exists() } map { Ok.sendFile(_, inline = true).withHeaders(CACHE_CONTROL -> "no-store")}
+
+    // return the first valid path, return NotFound if no valid path exists
+    responses.headOption getOrElse NotFound
   }
 }
