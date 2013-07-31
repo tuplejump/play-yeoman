@@ -4,7 +4,7 @@ organization := "com.tuplejump"
 
 sbtPlugin := true
 
-version := "0.5.2"
+version := "0.6.2-TJ"
 
 scalaVersion := "2.9.2"
 
@@ -12,7 +12,7 @@ libraryDependencies += "org.scalatest" % "scalatest_2.10" % "1.9.1" % "test"
 
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-addSbtPlugin("play" % "sbt-plugin" % "2.1.0")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.2-TJ-SNAPSHOT")
 
 licenses := Seq("Apache License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0"))
 

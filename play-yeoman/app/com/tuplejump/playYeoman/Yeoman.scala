@@ -12,10 +12,13 @@ object Yeoman extends Controller {
 
   def index = Action {
     request =>
-      if (request.path.endsWith("/"))
-        at("index.html").apply(request)
-      else
+      if (request.path.endsWith("/")) {
+        AsyncResult {
+          at("index.html").apply(request)
+        }
+      } else {
         Redirect(request.path + "/")
+      }
   }
 
 
@@ -46,7 +49,7 @@ object Yeoman extends Controller {
       DevAssets.at(appPath, file, CACHE_CONTROL -> "no-store")
   }
 
-  lazy val atHandler = if (Play.isProd) assetHandler(_: String) else extAssetHandler(_: String)
+  lazy val atHandler: (String => Action[AnyContent]) = if (Play.isProd) assetHandler(_: String) else extAssetHandler(_: String)
 
   def at(file: String): Action[AnyContent] = {
     atHandler(file)
