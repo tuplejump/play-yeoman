@@ -11,7 +11,7 @@ https://github.com/leon/play-grunt-angular-prototype
 Support
 =======
 
-If you face any issues using this plugin, please feel free to report to <opensource [at] tuplejump [dot] com> or shout out at twitter mentioning @tuplejump or @milliondreams.
+If you face any issues using this plugin, please feel free to report to | opensource [at] tuplejump [dot] com | or shout out at twitter mentioning @tuplejump or @milliondreams.
 You can also create a issue in the github issue tracker.
 
 If you found a bug and fixed it, please do raise a pull request, all users will appreciate that.
@@ -35,7 +35,7 @@ How to use it?
 2) Add the yeoman sbt plugin to the project. Edit project/plugins.sbt to add the following line,
 
 ```
-addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.5.1")
+addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.5.2")
 
 ```
 
@@ -61,7 +61,7 @@ import com.tuplejump.sbt.yeoman.Yeoman
 
 ```
 
-GET     /ui                         com.tuplejump.playYeoman.Yeoman.index
+GET     /ui                     com.tuplejump.playYeoman.Yeoman.index
 
 ->	    /ui/                    yeoman.Routes
 
