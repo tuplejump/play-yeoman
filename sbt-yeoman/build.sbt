@@ -4,9 +4,11 @@ organization := "com.tuplejump"
 
 sbtPlugin := true
 
-version := "0.6.2"
+version := "0.6.2-M1"
 
-scalaVersion := "2.9.2"
+scalaVersion := "2.10.2"
+
+sbtVersion in Global := "0.13.0-RC4"
 
 libraryDependencies += "org.scalatest" % "scalatest_2.10" % "1.9.1" % "test"
 

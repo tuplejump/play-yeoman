@@ -5,7 +5,7 @@ import play.Project._
 object ApplicationBuild extends Build {
 
   val appName = "play-yeoman"
-  val appVersion = "0.6.2"
+  val appVersion = "0.6.2-M1"
 
   val appDependencies = Seq(
     // Add your project dependencies here,
@@ -16,6 +16,7 @@ object ApplicationBuild extends Build {
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add your own project settings here
+    scalaVersion in Global := "2.10.2", 
     homepage := Some(url("https://github.com/tuplejump/play-yeoman")),
     organization := "com.tuplejump",
     organizationName := "Tuplejump Software PVt. Ltd.",
