@@ -46,7 +46,10 @@ object Yeoman extends Plugin {
     playOnStarted <+= yeomanDirectory {
       base =>
         (address: InetSocketAddress) => {
-          Grunt.process = Some(Process("grunt server --force", base).run)
+          if (System.getProperty("os.name").startsWith("Windows"))
+            Grunt.process = Some(Process("cmd /c grunt server --force", base).run)
+          else
+            Grunt.process = Some(Process("grunt server --force", base).run)
         }: Unit
     },
 
@@ -74,7 +77,10 @@ object Yeoman extends Plugin {
     if (!base.exists()) (base.mkdirs())
     Command.args(name, "<" + name + "-command>") {
       (state, args) =>
-        Process(name :: args.toList, base) !<;
+        if (System.getProperty("os.name").startsWith("Windows"))
+          Process("cmd" :: "/c" :: name :: args.toList, base) !<;
+        else
+          Process(name :: args.toList, base) !<;
         state
     }
   }
