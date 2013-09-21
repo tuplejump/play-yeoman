@@ -24,7 +24,8 @@ import scala.Some
 
 object Yeoman extends Plugin {
   val yeomanDirectory = SettingKey[File]("yeoman-directory")
-
+  val yeomanGruntfile = SettingKey[String]("yeoman-gruntfile")
+  
   val yeomanSettings: Seq[Project.Setting[_]] = Seq(
     libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.5.2" intransitive()),
 
@@ -38,6 +39,8 @@ object Yeoman extends Plugin {
     yeomanDirectory <<= (baseDirectory in Compile) {
       _ / "ui"
     },
+    
+    yeomanGruntfile := "Gruntfile.js",
 
     // Add the views to the dist
     playAssetsDirectories <+= (yeomanDirectory in Compile)(base => base / "dist"),
@@ -47,9 +50,9 @@ object Yeoman extends Plugin {
       base =>
         (address: InetSocketAddress) => {
           if (System.getProperty("os.name").startsWith("Windows"))
-            Grunt.process = Some(Process("cmd /c grunt server --force", base).run)
+            Grunt.process = Some(Process("cmd /c grunt --gruntfile="+ yeomanGruntfile+" server --force", base).run)
           else
-            Grunt.process = Some(Process("grunt server --force", base).run)
+            Grunt.process = Some(Process("grunt --gruntfile="+ yeomanGruntfile+" server --force", base).run)
         }: Unit
     },
 
