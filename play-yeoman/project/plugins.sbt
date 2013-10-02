@@ -9,5 +9,5 @@ resolvers += "Typesafe Snapshots" at "http://repo.typesafe.com/typesafe/snapshot
 resolvers += Resolver.file("Local Play Repository", file("/home/rohit/work/personal/Play20/repository/local"))( Resolver.ivyStylePatterns)
 
 // Use the Play sbt plugin for Play projects
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.2-SNAPSHOT")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.2.0")
 
