@@ -46,13 +46,14 @@ object Yeoman extends Plugin {
     playAssetsDirectories <+= (yeomanDirectory in Compile)(base => base / "dist"),
 
     // Start grunt on play run
-    playOnStarted <+= yeomanDirectory {
-      base =>
+    playOnStarted <+= (yeomanDirectory, yeomanGruntfile) {
+      (base, gruntFile) =>
         (address: InetSocketAddress) => {
+          println(gruntFile)
           if (System.getProperty("os.name").startsWith("Windows"))
-            Grunt.process = Some(Process("cmd /c grunt --gruntfile="+ yeomanGruntfile+" server --force", base).run)
+            Grunt.process = Some(Process("cmd /c grunt --gruntfile="+ gruntFile+" server --force", base).run)
           else
-            Grunt.process = Some(Process("grunt --gruntfile="+ yeomanGruntfile+" server --force", base).run)
+            Grunt.process = Some(Process("grunt --gruntfile="+ gruntFile+" server --force", base).run)
         }: Unit
     },
 
