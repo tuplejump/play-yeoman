@@ -1,0 +1,28 @@
++ Support Play 2.2
++ Support for multi-project projects
++ Support for CoffeeScript
++ Basic Windows 8 Support
++ Support to configure the gruntfile to use
++ More inbuilt routes to handle redirections
+
+
+I am happy to say that this release has more external contributions than my own.
+
+This release wouldn't be possible without contributions from -
+
++ [Anton Fedchenko](https://github.com/kompot)
++ [Sam Zilverberg](https://github.com/samzilverberg)
++ [Patrick Schulz](https://github.com/pschulz)
++ [Ties de Kock](https://github.com/ties)
++ [Juha Litola](https://github.com/jlitola)
++ [senior7515](https://github.com/senior7515)
++ [Arindam Biswas](https://github.com/arindambiswas)
++ [Mark Kenneth Ranosa](https://github.com/mranosa)
++ [Walter Miller](https://github.com/wmill)
++ [Thilko Richter](https://github.com/thilko)
++ [Jan Tammen](https://github.com/jtammen)
++ [Jeremy](https://github.com/ioRekz)
++ [Martin Grotzke](https://github.com/magro)
+
+
+
