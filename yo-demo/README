@@ -1,7 +1,0 @@
-Start sbt adn run the following -
-
-$ update
-$ npm install
-$ bower install
-$ run
-
