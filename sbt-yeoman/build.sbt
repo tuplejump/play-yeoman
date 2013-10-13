@@ -4,7 +4,7 @@ organization := "com.tuplejump"
 
 sbtPlugin := true
 
-version := "0.6.2"
+version := "0.6.3-SNAPSHOT"
 
 scalaVersion := "2.10.2"
 
