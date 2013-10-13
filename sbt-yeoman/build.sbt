@@ -1,3 +1,4 @@
+
 name := """sbt-yeoman"""
 
 organization := "com.tuplejump"
@@ -62,4 +63,5 @@ pomExtra := (
     </developer>
   </developers>)
 
+TaskKey[Process]("run-grunt") := stringToProcess("grunt").run
 
