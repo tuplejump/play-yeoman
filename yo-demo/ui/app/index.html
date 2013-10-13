@@ -7,11 +7,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title></title>
+
+    <base href="/ui">
+
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="ui/styles/main.css">
     <!-- endbuild -->
   </head>
   <body ng-app="uiApp">
@@ -20,8 +23,8 @@
     <![endif]-->
 
     <!--[if lt IE 9]>
-      <script src="components/es5-shim/es5-shim.js"></script>
-      <script src="components/json3/lib/json3.min.js"></script>
+      <script src="ui/components/es5-shim/es5-shim.js"></script>
+      <script src="ui/components/json3/lib/json3.min.js"></script>
     <![endif]-->
 
 <div>Hello!</div>
@@ -29,14 +32,15 @@
     <!-- Add your site or application content here -->
     <div class="container" ng-view></div>
 
-    <script src="components/angular/angular.js"></script>
-    <script src="components/angular-resource/angular-resource.js"></script>
-    <script src="components/angular-cookies/angular-cookies.js"></script>
-    <script src="components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="ui/components/angular/angular.js"></script>
+    <script src="ui/components/angular-resource/angular-resource.js"></script>
+    <script src="ui/components/angular-cookies/angular-cookies.js"></script>
+    <script src="ui/components/angular-sanitize/angular-sanitize.js"></script>
 
     <!-- build:js scripts/scripts.js -->
-    <script src="scripts/app.js"></script>
-    <script src="scripts/controllers/main.js"></script>
+    <script src="ui/scripts/app.js"></script>
+    <script src="ui/scripts/controllers/main.js"></script>
+    <script src="ui/scripts/controllers/myhome.js"></script>
     <!-- endbuild -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

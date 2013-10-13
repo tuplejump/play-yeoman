@@ -1,13 +1,24 @@
 'use strict';
 
 angular.module('uiApp', [])
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
-  });
+    .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+
+        $locationProvider.html5Mode(true);
+
+        $routeProvider
+            .when('/ui', {
+                templateUrl: 'ui/views/main.html',
+                controller: 'MainCtrl'
+            })
+            .when('/undefined', {
+              templateUrl: 'ui/views/undefined.html',
+              controller: 'UndefinedCtrl'
+            })
+            .when('/ui/myhome', {
+              templateUrl: 'ui/views/myhome.html',
+              controller: 'MyhomeCtrl'
+            })
+            .otherwise({
+                redirectTo: '/'
+            });
+    }]);
