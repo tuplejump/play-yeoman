@@ -25,9 +25,11 @@ import scala.Some
 object Yeoman extends Plugin {
   val yeomanDirectory = SettingKey[File]("yeoman-directory")
   val yeomanGruntfile = SettingKey[String]("yeoman-gruntfile")
-  
+
+  val doGrunt = inputKey[Unit]("Task to run grunt")
+
   val yeomanSettings: Seq[Project.Setting[_]] = Seq(
-    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.6.2" intransitive()),
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.6.3-SNAPSHOT" intransitive()),
 
     // Turn off play's internal less compiler
     lessEntryPoints := Nil,
@@ -39,8 +41,14 @@ object Yeoman extends Plugin {
     yeomanDirectory <<= (baseDirectory in Compile) {
       _ / "ui"
     },
-    
+
     yeomanGruntfile := "Gruntfile.js",
+
+    doGrunt := (yeomanDirectory, yeomanGruntfile) map {
+      (base, gruntFile) =>
+        //stringToProcess("grunt " + (Def.spaceDelimited("<arg>").parsed).mkString(" ")).!!,
+        runGrunt(base, gruntFile, (Def.spaceDelimited("<arg>").parsed).mkString(" "))
+    },
 
     // Add the views to the dist
     playAssetsDirectories <+= (yeomanDirectory in Compile)(base => base / "dist"),
@@ -50,10 +58,7 @@ object Yeoman extends Plugin {
       (base, gruntFile) =>
         (address: InetSocketAddress) => {
           println(gruntFile)
-          if (System.getProperty("os.name").startsWith("Windows"))
-            Grunt.process = Some(Process("cmd /c grunt --gruntfile="+ gruntFile+" server --force", base).run)
-          else
-            Grunt.process = Some(Process("grunt --gruntfile="+ gruntFile+" server --force", base).run)
+          Grunt.process = runGrunt(base, gruntFile, " server --force")
         }: Unit
     },
 
@@ -76,6 +81,15 @@ object Yeoman extends Plugin {
         ).map(cmd(_, base))
     }
   )
+
+
+  private def runGrunt(base: sbt.File, gruntFile: String, args: String) = {
+    println(s"Will run: grunt --gruntfile=$gruntFile $args in ${base.getPath}")
+    if (System.getProperty("os.name").startsWith("Windows"))
+      Some(Process("cmd /c grunt --gruntfile=" + gruntFile, base).run)
+    else
+      Some(Process("grunt --gruntfile=" + gruntFile, base).run)
+  }
 
   private def cmd(name: String, base: File): Command = {
     if (!base.exists()) (base.mkdirs())
