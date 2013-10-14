@@ -44,8 +44,9 @@ object Yeoman extends Plugin {
 
     yeomanGruntfile := "Gruntfile.js",
 
-    doGrunt := (yeomanDirectory, yeomanGruntfile) map {
-      (base, gruntFile) =>
+    doGrunt :=  {
+        val base = (yeomanDirectory in Compile).value
+        val gruntFile = (yeomanGruntfile in Compile).value
         //stringToProcess("grunt " + (Def.spaceDelimited("<arg>").parsed).mkString(" ")).!!,
         runGrunt(base, gruntFile, (Def.spaceDelimited("<arg>").parsed).mkString(" "))
     },
