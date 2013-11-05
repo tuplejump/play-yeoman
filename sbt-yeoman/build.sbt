@@ -63,7 +63,4 @@ pomExtra := (
     </developer>
   </developers>)
 
-val runGrunt = inputKey[String]("A input task for grunt")
-
-runGrunt := stringToProcess("grunt " + (Def.spaceDelimited("<arg>").parsed).mkString(" ")).!!
 

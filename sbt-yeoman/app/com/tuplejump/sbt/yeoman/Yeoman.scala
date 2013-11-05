@@ -22,12 +22,19 @@ import play.Project._
 import java.net.InetSocketAddress
 import scala.Some
 
+import com.typesafe.sbt.packager.universal.Keys._
+
+
 object Yeoman extends Plugin {
   val yeomanDirectory = SettingKey[File]("yeoman-directory")
   val yeomanGruntfile = SettingKey[String]("yeoman-gruntfile")
-  
+
+  val grunt = inputKey[Unit]("Task to run grunt")
+
+  private val gruntDist = TaskKey[Unit]("Task to run dist grunt")
+
   val yeomanSettings: Seq[Project.Setting[_]] = Seq(
-    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.6.2" intransitive()),
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.6.3-SNAPSHOT" intransitive()),
 
     // Turn off play's internal less compiler
     lessEntryPoints := Nil,
@@ -39,8 +46,24 @@ object Yeoman extends Plugin {
     yeomanDirectory <<= (baseDirectory in Compile) {
       _ / "ui"
     },
-    
+
     yeomanGruntfile := "Gruntfile.js",
+
+    grunt := {
+      val base = (yeomanDirectory in Compile).value
+      val gruntFile = (yeomanGruntfile in Compile).value
+      //stringToProcess("grunt " + (Def.spaceDelimited("<arg>").parsed).mkString(" ")).!!,
+      runGrunt(base, gruntFile, Def.spaceDelimited("<arg>").parsed.toList)
+    },
+
+    gruntDist := {
+      val base = (yeomanDirectory in Compile).value
+      val gruntFile = (yeomanGruntfile in Compile).value
+      //stringToProcess("grunt " + (Def.spaceDelimited("<arg>").parsed).mkString(" ")).!!,
+      runGrunt(base, gruntFile, List())
+    },
+
+    dist <<= dist dependsOn (gruntDist),
 
     // Add the views to the dist
     playAssetsDirectories <+= (yeomanDirectory in Compile)(base => base / "dist"),
@@ -49,11 +72,7 @@ object Yeoman extends Plugin {
     playOnStarted <+= (yeomanDirectory, yeomanGruntfile) {
       (base, gruntFile) =>
         (address: InetSocketAddress) => {
-          println(gruntFile)
-          if (System.getProperty("os.name").startsWith("Windows"))
-            Grunt.process = Some(Process("cmd /c grunt --gruntfile="+ gruntFile+" server --force", base).run)
-          else
-            Grunt.process = Some(Process("grunt --gruntfile="+ gruntFile+" server --force", base).run)
+          Grunt.process = runGrunt(base, gruntFile, "server" :: "--force" :: Nil)
         }: Unit
     },
 
@@ -69,7 +88,7 @@ object Yeoman extends Plugin {
     commands <++= yeomanDirectory {
       base =>
         Seq(
-          "grunt",
+          //"grunt",
           "bower",
           "yo",
           "npm"
@@ -77,14 +96,30 @@ object Yeoman extends Plugin {
     }
   )
 
+
+  private def runGrunt(base: sbt.File, gruntFile: String, args: List[String]) = {
+    //println(s"Will run: grunt --gruntfile=$gruntFile $args in ${base.getPath}")
+    if (System.getProperty("os.name").startsWith("Windows")) {
+      val process: ProcessBuilder = Process("cmd" :: "/c" :: "grunt" :: "--gruntfile=" + gruntFile :: args, base)
+      println(s"Will run: ${process.toString} in ${base.getPath}")
+      Some(process.run)
+    }
+    else {
+      val process: ProcessBuilder = Process("grunt" :: "--gruntfile=" + gruntFile :: args, base)
+      println(s"Will run: ${process.toString} in ${base.getPath}")
+      Some(process.run)
+    }
+  }
+
   private def cmd(name: String, base: File): Command = {
     if (!base.exists()) (base.mkdirs())
     Command.args(name, "<" + name + "-command>") {
       (state, args) =>
-        if (System.getProperty("os.name").startsWith("Windows"))
-          Process("cmd" :: "/c" :: name :: args.toList, base) !<;
-        else
-          Process(name :: args.toList, base) !<;
+        if (System.getProperty("os.name").startsWith("Windows")) {
+          Process("cmd" :: "/c" :: name :: args.toList, base) !<
+        } else {
+          Process(name :: args.toList, base) !<
+        }
         state
     }
   }
