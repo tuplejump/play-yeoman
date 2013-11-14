@@ -121,6 +121,34 @@ user yo-demo> sbt
 
 11) Click on the liveReload plugin in the browser to connect and navigate to http://localhost:9000/ui/
 
+
+### Support for Scala Templates
+
+To use Scala templates you have 2 options, 
+
+1) The old way is to create your templates in app/views and create a route for,
+
+```
+    GET /ui/views/{view_name}.html      controllers.Application.{your_action_handler}
+```
+
+2) Begining, 0.6.3, play-yeoman supports compilation of views from the yeoman directory too. 
+
+* All you have to do to enable it is add Yeoman.withTemplates settings to the app settings, so your play project will now look like this,
+
+```
+  val main = play.Project(appName, appVersion, appDependencies).settings(
+    // Add your own project settings here
+    (Yeoman.yeomanSettings ++ Yeoman.withTemplates) : _*
+  )
+
+```
+* Once that is done play will compile the templates from yeoman directory too, and you can use them in your controllers. This helps you keep all your UI files together under the yeoman directory ('ui' by default)
+
+* Look at the yo-demo project for details!
+
+
+
 ### Taking it to production
 
 The process to put your app in production remains the same as you do today with any play application, except for one minor change. We need to run the yeoman(grunt) build before staging/packaging the app.

@@ -28,12 +28,13 @@ import com.typesafe.sbt.packager.universal.Keys._
 object Yeoman extends Plugin {
   val yeomanDirectory = SettingKey[File]("yeoman-directory")
   val yeomanGruntfile = SettingKey[String]("yeoman-gruntfile")
+  val yeomanExcludes = sbt.SettingKey[Seq[String]]("yeoman-excludes")
 
   val grunt = inputKey[Unit]("Task to run grunt")
 
   private val gruntDist = TaskKey[Unit]("Task to run dist grunt")
 
-  val yeomanSettings: Seq[Project.Setting[_]] = Seq(
+  val yeomanSettings = Seq(
     libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.6.3-SNAPSHOT" intransitive()),
 
     // Turn off play's internal less compiler
@@ -95,6 +96,23 @@ object Yeoman extends Plugin {
         ).map(cmd(_, base))
     }
   )
+
+  val withTemplates = Seq(
+    unmanagedSourceDirectories in Compile ++= Seq(Yeoman.yeomanDirectory.value / "app"),
+    yeomanExcludes <<= (yeomanDirectory)(yd => Seq(
+      yd + "/app/components/",
+      yd + "/app/images/",
+      yd + "/app/styles/"
+    )),
+    excludeFilter in unmanagedSources <<=
+      (excludeFilter in unmanagedSources, yeomanExcludes) {
+        (currentFilter: FileFilter, ye) =>
+          currentFilter || new FileFilter {
+            def accept(pathname: File): Boolean = {
+              (true /: ye.map(s => pathname.getAbsolutePath.startsWith(s)))(_ && _)
+            }
+          }
+      })
 
 
   private def runGrunt(base: sbt.File, gruntFile: String, args: List[String]) = {
