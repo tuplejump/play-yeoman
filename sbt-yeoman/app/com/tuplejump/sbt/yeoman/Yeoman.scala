@@ -66,6 +66,8 @@ object Yeoman extends Plugin {
 
     dist <<= dist dependsOn (gruntDist),
 
+    stage <<= stage dependsOn (gruntDist),
+
     // Add the views to the dist
     playAssetsDirectories <+= (yeomanDirectory in Compile)(base => base / "dist"),
 

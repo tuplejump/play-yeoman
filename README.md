@@ -151,10 +151,7 @@ To use Scala templates you have 2 options,
 
 ### Taking it to production
 
-The process to put your app in production remains the same as you do today with any play application, except for one minor change. We need to run the yeoman(grunt) build before staging/packaging the app.
-
-So if you deploy an staged app, instead of `sbt stage`, run `sbt grunt stage`.
-In case you build a packaged dist, instead of `sbt dist`, run `sbt grunt dist`.
+From 0.6.3, play-yeoman updates Play's 'stage' and 'dist' tasks to depend on the grunt task. Thus you don't need any additional step putting this in production. when you run either `sbt dist` or `sbt play` it will automatically run grunt as part of the build!
 
 
 Licence
