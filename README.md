@@ -61,9 +61,9 @@ import com.tuplejump.sbt.yeoman.Yeoman
 
 ```
 
-GET     /ui                     com.tuplejump.playYeoman.Yeoman.index
+GET     /ui         com.tuplejump.playYeoman.Yeoman.index
 
-->	    /ui/                    yeoman.Routes
+->	    /ui/        yeoman.Routes
 
 
 ```
@@ -72,7 +72,7 @@ Optionally, you can also redirect your root url,
 
 ```
 
-GET     /                           com.tuplejump.playYeoman.Yeoman.redirectRoot(base="/ui/")
+GET     /           com.tuplejump.playYeoman.Yeoman.redirectRoot(base="/ui/")
 
 ```
 
@@ -151,7 +151,7 @@ To use Scala templates you have 2 options,
 
 ### Taking it to production
 
-From 0.6.3, play-yeoman updates Play's 'stage' and 'dist' tasks to depend on the grunt task. Thus you don't need any additional step putting this in production. when you run either `sbt dist` or `sbt play` it will automatically run grunt as part of the build!
+From 0.6.3, play-yeoman updates Play's 'stage' and 'dist' tasks to depend on the grunt task. Thus you don't need any additional step putting this in production. when you run either `sbt dist` or `sbt stage` it will automatically run grunt as part of the build!
 
 
 Licence
