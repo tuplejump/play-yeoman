@@ -5,8 +5,8 @@ import com.tuplejump.sbt.yeoman.Yeoman
 
 object ApplicationBuild extends Build {
 
-  val appName         = "yo-demo"
-  val appVersion      = "1.6.3-SNAPSHOT"
+  val appName = "yo-demo"
+  val appVersion = "1.6.3-SNAPSHOT"
 
   val appDependencies = Seq(
     // Add your project dependencies here,
@@ -14,10 +14,11 @@ object ApplicationBuild extends Build {
     anorm
   )
 
+  val appSettings = Yeoman.yeomanSettings ++ Yeoman.withTemplates
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
-    // Add your own project settings here 
-    Yeoman.yeomanSettings : _*     
+    // Add your own project settings here
+    appSettings: _*
   )
 
 }
