@@ -7,6 +7,7 @@ import play.api.Play.current
 import java.io.File
 import play.api.libs.MimeTypes
 import scala.concurrent.Future
+import scala.collection.JavaConversions._
 import play.api.libs.concurrent.Execution.Implicits._
 
 
@@ -36,7 +37,10 @@ object Yeoman extends Controller {
   }
 
   def assetHandler(file: String) = {
-    Assets.at("/ui/dist", file)
+    Play.configuration.getString("yeoman.distDir") match {
+      case Some(distDir) => Assets.at(distDir, file)
+      case None => Assets.at("/ui/dist", file)
+    }
   }
 
   lazy val atHandler = if (Play.isProd) assetHandler(_: String) else DevAssets.assetHandler(_: String)
@@ -49,7 +53,11 @@ object Yeoman extends Controller {
 
 object DevAssets extends Controller {
   // paths to the grunt compile directory or else the application directory, in order of importance
-  val basePaths = List(Play.application.getFile("ui/.tmp"), Play.application.getFile("ui/app"))
+  val runtimeDirs = Play.configuration.getStringList("yeoman.devDirs")
+  val basePaths: List[java.io.File] = runtimeDirs match {
+    case Some(dirs) => dirs.map(Play.application.getFile _).toList
+    case None => List(Play.application.getFile("ui/.tmp"), Play.application.getFile("ui/app"))
+  }
 
   /**
    * Construct the temporary and real path under the application.
