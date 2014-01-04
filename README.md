@@ -35,7 +35,7 @@ How to use it?
 2) Add the yeoman sbt plugin to the project. Edit project/plugins.sbt to add the following line,
 
 ```
-addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.6.2")
+addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.6.3")
 
 ```
 
@@ -148,10 +148,21 @@ To use Scala templates you have 2 options,
 * Look at the yo-demo project for details!
 
 
-
 ### Taking it to production
 
 From 0.6.3, play-yeoman updates Play's 'stage' and 'dist' tasks to depend on the grunt task. Thus you don't need any additional step putting this in production. when you run either `sbt dist` or `sbt stage` it will automatically run grunt as part of the build!
+
+
+### Configuring the yeoman directory paths for Play
+
+By default play-yeoman looks for assets in "/ui/dist" in production or "ui/app" and "ui/.tmp" in development mode. In some cases where you are not using these directories, for example you have your yeoman project in a directory other than "ui" or your dist is built at some other location, you may want to configure this.
+
+For this purpose play-yeoman provides 2 settings that you can use in you play project's application.conf.
+
+1) yeoman.distDir - This is a String that takes the location where yeoman/grunt build puts your web app distribution. This location will be used by play-yeoman when you are running in production i.e. after dist/stage.
+
+2) yeoman.devDirs - This is a List of String that takes a list of locations where play-yeoman should look for files in development mode i.e. when run using sbt run.
+
 
 
 Licence
@@ -159,7 +170,7 @@ Licence
 
 This software is licensed under the Apache 2 license, quoted below.
 
-Copyright 2013 Tuplejump Software Pvt. Ltd. (http://www.tuplejump.com).
+Copyright 2013-2014 Tuplejump, Inc (http://www.tuplejump.com).
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this project except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 

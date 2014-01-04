@@ -6,7 +6,7 @@ import com.tuplejump.sbt.yeoman.Yeoman
 object ApplicationBuild extends Build {
 
   val appName = "yo-demo"
-  val appVersion = "1.6.3-SNAPSHOT"
+  val appVersion = "1.6.3"
 
   val appDependencies = Seq(
     // Add your project dependencies here,
