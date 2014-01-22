@@ -35,11 +35,12 @@ object Yeoman extends Plugin {
   private val gruntDist = TaskKey[Unit]("Task to run dist grunt")
 
   val yeomanSettings = Seq(
-    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.6.3" intransitive()),
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.6.4" intransitive()),
 
     // Turn off play's internal less compiler
     lessEntryPoints := Nil,
 
+    // Turn off play's internal javascript compiler
     // Turn off play's internal javascript compiler
     javascriptEntryPoints := Nil,
 
@@ -54,14 +55,14 @@ object Yeoman extends Plugin {
       val base = (yeomanDirectory in Compile).value
       val gruntFile = (yeomanGruntfile in Compile).value
       //stringToProcess("grunt " + (Def.spaceDelimited("<arg>").parsed).mkString(" ")).!!,
-      runGrunt(base, gruntFile, Def.spaceDelimited("<arg>").parsed.toList)
+      runGrunt(base, gruntFile, Def.spaceDelimited("<arg>").parsed.toList).get.exitValue()
     },
 
     gruntDist := {
       val base = (yeomanDirectory in Compile).value
       val gruntFile = (yeomanGruntfile in Compile).value
       //stringToProcess("grunt " + (Def.spaceDelimited("<arg>").parsed).mkString(" ")).!!,
-      runGrunt(base, gruntFile, List())
+      runGrunt(base, gruntFile, List()).get.exitValue()
     },
 
     dist <<= dist dependsOn (gruntDist),
@@ -130,6 +131,7 @@ object Yeoman extends Plugin {
       Some(process.run)
     }
   }
+
 
   private def cmd(name: String, base: File): Command = {
     if (!base.exists()) (base.mkdirs())

@@ -1,0 +1,28 @@
+New in this release -
+
++ Support Play 2.2.1
++ Dist and Stage now depend on Grunt, no need to run grunt explicitly. Github Issue #4
++ Support for having Play Scala Templates in Yeoman project. Github Issue #12
++ Yeoman directories to be used by play to serve the assets can noww be configured, so you are no longer tied to "/ui". Github Issue #23
++ yo-demo to have Yeoman and Standard play routes served in the same Yeoman Project. Github Issue #26
+
+This release wouldn't be possible without contributions from -
+
++ [Anton Fedchenko](https://github.com/kompot)
++ [Sam Zilverberg](https://github.com/samzilverberg)
++ [Patrick Schulz](https://github.com/pschulz)
++ [Ties de Kock](https://github.com/ties)
++ [Juha Litola](https://github.com/jlitola)
++ [senior7515](https://github.com/senior7515)
++ [Arindam Biswas](https://github.com/arindambiswas)
++ [Mark Kenneth Ranosa](https://github.com/mranosa)
++ [Walter Miller](https://github.com/wmill)
++ [Thilko Richter](https://github.com/thilko)
++ [Jan Tammen](https://github.com/jtammen)
++ [Jeremy](https://github.com/ioRekz)
++ [Martin Grotzke](https://github.com/magro)
++ [Shiti Saxena](https://github.com/Shiti)
++ [Edmondo Porcu](https://github.com/edmondo1984)
+
+
+
