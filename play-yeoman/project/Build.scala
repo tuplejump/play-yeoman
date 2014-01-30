@@ -5,7 +5,7 @@ import play.Project._
 object ApplicationBuild extends Build {
 
   val appName = "play-yeoman"
-  val appVersion = "0.6.3"
+  val appVersion = "0.6.4"
 
   val appDependencies = Seq(
     // Add your project dependencies here,

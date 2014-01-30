@@ -1,0 +1,25 @@
+New in this release -
+
+* This is a minor bug fix release over [v0.6.3](http://notes.implicit.ly/post/72194709251/play-yeoman-0-6-3)
+* It fixes the grunt running in parallel [issue](https://github.com/tuplejump/play-yeoman/issues/34)
+
+This release wouldn't be possible without contributions from -
+
++ [Anton Fedchenko](https://github.com/kompot)
++ [Sam Zilverberg](https://github.com/samzilverberg)
++ [Patrick Schulz](https://github.com/pschulz)
++ [Ties de Kock](https://github.com/ties)
++ [Juha Litola](https://github.com/jlitola)
++ [senior7515](https://github.com/senior7515)
++ [Arindam Biswas](https://github.com/arindambiswas)
++ [Mark Kenneth Ranosa](https://github.com/mranosa)
++ [Walter Miller](https://github.com/wmill)
++ [Thilko Richter](https://github.com/thilko)
++ [Jan Tammen](https://github.com/jtammen)
++ [Jeremy](https://github.com/ioRekz)
++ [Martin Grotzke](https://github.com/magro)
++ [Shiti Saxena](https://github.com/Shiti)
++ [Edmondo Porcu](https://github.com/edmondo1984)
+
+
+
