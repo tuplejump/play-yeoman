@@ -76,7 +76,7 @@ object Yeoman extends Plugin {
     playOnStarted <+= (yeomanDirectory, yeomanGruntfile) {
       (base, gruntFile) =>
         (address: InetSocketAddress) => {
-          Grunt.process = runGrunt(base, gruntFile, "server" :: "--force" :: Nil)
+          Grunt.process = runGrunt(base, gruntFile, "serve" :: "--force" :: Nil)
         }: Unit
     },
 
