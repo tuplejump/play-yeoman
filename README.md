@@ -57,7 +57,7 @@ import com.tuplejump.sbt.yeoman.Yeoman
 
 ```
 
-If you're using play >= 2.2, you might need to place the 2 additions above into `build.sbt` as follows:
+Note: If you're using build.sbt instead of the full scala build, you need to place the 2 additions above into `build.sbt` as follows:
 
 
 ```scala
