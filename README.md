@@ -32,16 +32,16 @@ How to use it?
 
 1) Create a new play project or open an existing play project
 
-2) Add the yeoman sbt plugin to the project. Edit project/plugins.sbt to add the following line,
+2) Add the yeoman sbt plugin to the project. Edit `project/plugins.sbt` to add the following line,
 
 ```
 addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.6.4")
 
 ```
 
-3) Import Yeoman classes in the project build adding the following import to project/Build.scala,
+3) Import Yeoman classes in the project build adding the following import to `project/Build.scala`,
 
-```
+```scala
 
 import com.tuplejump.sbt.yeoman.Yeoman
 
@@ -49,13 +49,34 @@ import com.tuplejump.sbt.yeoman.Yeoman
 
 4) In the same file, add the yeoman settings to your Play project like this,
 
-```
+```scala
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add your own project settings here
     Yeoman.yeomanSettings : _*
   )
 
 ```
+
+If you're using play >= 2.2, you might need to place the 2 additions above into `build.sbt` as follows:
+
+
+```scala
+
+import com.tuplejump.sbt.yeoman.Yeoman
+
+name := "play-project"
+
+version := "1.0-SNAPSHOT"
+
+libraryDependencies ++= Seq(
+  javaJdbc,
+  javaEbean,
+  cache
+)
+
+play.Project.playJavaSettings ++ Yeoman.yeomanSettings
+
+``` 
 
 5) Add yeoman routes to the project, appending the following line in conf/routes files,
 
