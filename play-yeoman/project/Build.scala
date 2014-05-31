@@ -1,11 +1,12 @@
 import sbt._
 import Keys._
-import play.Project._
+import play.Play.autoImport._
+import PlayKeys._
 
 object ApplicationBuild extends Build {
 
   val appName = "play-yeoman"
-  val appVersion = "0.6.4"
+  val appVersion = "0.7-SNAPSHOT"
 
   val appDependencies = Seq(
     // Add your project dependencies here,
@@ -13,10 +14,11 @@ object ApplicationBuild extends Build {
     //anorm
   )
 
-
-  val main = play.Project(appName, appVersion, appDependencies).settings(
+  val main = Project(appName, file(".")).enablePlugins(play.PlayScala).settings(
+    version := appVersion,
+    libraryDependencies ++= appDependencies,
     // Add your own project settings here
-    scalaVersion in Global := "2.10.2", 
+    scalaVersion in Global := "2.10.4",
     homepage := Some(url("https://github.com/tuplejump/play-yeoman")),
     organization := "com.tuplejump",
     organizationName := "Tuplejump Software PVt. Ltd.",
