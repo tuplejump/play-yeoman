@@ -2,27 +2,20 @@ package com.tuplejump.playYeoman
 
 import play.api._
 import play.api.mvc._
-import controllers.{ExternalAssets, Assets}
 import play.api.Play.current
 import java.io.File
-import play.api.libs.MimeTypes
+import controllers.Assets
 import scala.concurrent.Future
-import scala.collection.JavaConversions._
-import play.api.libs.concurrent.Execution.Implicits._
-
+import scala.concurrent.ExecutionContext.Implicits.global
 
 object Yeoman extends Controller {
 
   def index = Action.async {
     request =>
       if (request.path.endsWith("/")) {
-        //AsyncResult {
-        at("index.html").apply(request)
-        //}
+          at("index.html").apply(request)
       } else {
-        Future {
-          Redirect(request.path + "/")
-        }
+        Future(Redirect(request.path + "/"))
       }
   }
 

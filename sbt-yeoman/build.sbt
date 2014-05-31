@@ -1,21 +1,22 @@
-
 name := """sbt-yeoman"""
 
 organization := "com.tuplejump"
 
 sbtPlugin := true
 
-version := "0.6.4"
+version := "0.7-SNAPSHOT"
 
-scalaVersion := "2.10.2"
+scalaVersion := "2.10.4"
 
-sbtVersion in Global := "0.13.0"
+sbtVersion in Global := "0.13.5"
 
 libraryDependencies += "org.scalatest" % "scalatest_2.10" % "1.9.1" % "test"
 
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.2.0")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.3.0")
+
+addSbtPlugin("com.typesafe.sbt" % "sbt-web" % "1.0.0")
 
 licenses := Seq("Apache License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0"))
 
