@@ -1,8 +1,8 @@
 package com.tuplejump.playYeoman
 
 import play.api._
-import play.api.controllers.Assets
 import play.api.mvc._
+import controllers.Assets
 import play.api.Play.current
 import java.io.File
 import scala.concurrent.Future
@@ -50,7 +50,7 @@ object DevAssets extends Controller {
   val runtimeDirs = Play.configuration.getStringList("yeoman.devDirs")
   val basePaths: List[java.io.File] = runtimeDirs match {
     case Some(dirs) => dirs.asScala.map(Play.application.getFile _).toList
-    case None => List(Play.application.getFile("ui/.tmp"), Play.application.getFile("ui/app"))
+    case None => List(Play.application.getFile("ui/.tmp"), Play.application.getFile("ui/dist"))
   }
 
   /**
