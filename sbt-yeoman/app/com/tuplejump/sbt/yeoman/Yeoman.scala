@@ -90,11 +90,11 @@ object Yeoman extends Plugin {
 
 
   val withTemplates = Seq(
-    sourceDirectories in TwirlKeys.compileTemplates in Compile ++= Seq(Yeoman.yeomanDirectory.value / "app"),
+    sourceDirectories in TwirlKeys.compileTemplates in Compile ++= Seq(Yeoman.yeomanDirectory.value / "dist"),
     yeomanExcludes <<= (yeomanDirectory)(yd => Seq(
-      yd + "/app/components/",
-      yd + "/app/images/",
-      yd + "/app/styles/"
+      yd + "/dist/components/",
+      yd + "/dist/images/",
+      yd + "/dist/styles/"
     )),
     excludeFilter in unmanagedSources <<=
       (excludeFilter in unmanagedSources, yeomanExcludes) {
@@ -142,8 +142,17 @@ object Yeoman extends Plugin {
 
         var process: Option[Process] = None
 
+
+        override def beforeStarted(): Unit = {
+          val distProcess = runGrunt(base, gruntFile, "--force" :: Nil)
+          distProcess map {
+            case p: Process =>
+              p.exitValue();
+          }
+        }
+
         override def afterStarted(addr: InetSocketAddress): Unit = {
-          process = runGrunt(base, gruntFile, "serve" :: "--force" :: Nil)
+          process = runGrunt(base, gruntFile, "watch" :: "--force" :: Nil)
         }
 
         override def afterStopped(): Unit = {
