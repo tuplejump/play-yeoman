@@ -1,10 +1,8 @@
 package controllers
 
-import play.api._
 import play.api.mvc._
-import play.api.libs.json.Json
 import play.api.libs.json._
-import play.api.templates.Html
+import play.twirl.api.Html
 
 object Application extends Controller {
 

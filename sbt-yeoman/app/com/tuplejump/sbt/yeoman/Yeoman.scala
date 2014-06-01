@@ -26,7 +26,7 @@ import com.typesafe.sbt.web.Import._
 
 import com.typesafe.sbt.packager.universal.Keys._
 import play.PlayRunHook
-
+import play.twirl.sbt.Import._
 
 object Yeoman extends Plugin {
   val yeomanDirectory = SettingKey[File]("yeoman-directory")
@@ -38,7 +38,7 @@ object Yeoman extends Plugin {
   private val gruntDist = TaskKey[Unit]("Task to run dist grunt")
 
   val yeomanSettings: Seq[Def.Setting[_]] = Seq(
-    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.7" intransitive()),
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.7-SNAPSHOT" intransitive()),
 
     // Turn off play's internal less compiler
     lessEntryPoints := Nil,
@@ -88,8 +88,9 @@ object Yeoman extends Plugin {
     }
   )
 
+
   val withTemplates = Seq(
-    unmanagedSourceDirectories in Compile ++= Seq(Yeoman.yeomanDirectory.value / "app"),
+    sourceDirectories in TwirlKeys.compileTemplates in Compile ++= Seq(Yeoman.yeomanDirectory.value / "app"),
     yeomanExcludes <<= (yeomanDirectory)(yd => Seq(
       yd + "/app/components/",
       yd + "/app/images/",
