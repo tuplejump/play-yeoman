@@ -38,7 +38,7 @@ object Yeoman extends Plugin {
   private val gruntDist = TaskKey[Unit]("Task to run dist grunt")
 
   val yeomanSettings: Seq[Def.Setting[_]] = Seq(
-    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.7-SNAPSHOT" intransitive()),
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.7.0" intransitive()),
 
     // Turn off play's internal less compiler
     lessEntryPoints := Nil,
@@ -122,7 +122,7 @@ object Yeoman extends Plugin {
     }
   }
 
-
+  import scala.language.postfixOps
   private def cmd(name: String, base: File): Command = {
     if (!base.exists()) (base.mkdirs())
     Command.args(name, "<" + name + "-command>") {
