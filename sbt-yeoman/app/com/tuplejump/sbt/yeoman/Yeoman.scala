@@ -18,11 +18,14 @@ package com.tuplejump.sbt.yeoman
 
 import sbt._
 import sbt.Keys._
-import play.Project._
 import java.net.InetSocketAddress
 import scala.Some
+import play.Play.autoImport._
+import PlayKeys._
+import com.typesafe.sbt.web.Import._
 
 import com.typesafe.sbt.packager.universal.Keys._
+import play.PlayRunHook
 
 
 object Yeoman extends Plugin {
@@ -34,13 +37,12 @@ object Yeoman extends Plugin {
 
   private val gruntDist = TaskKey[Unit]("Task to run dist grunt")
 
-  val yeomanSettings = Seq(
-    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.6.4" intransitive()),
+  val yeomanSettings: Seq[Def.Setting[_]] = Seq(
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.7" intransitive()),
 
     // Turn off play's internal less compiler
     lessEntryPoints := Nil,
 
-    // Turn off play's internal javascript compiler
     // Turn off play's internal javascript compiler
     javascriptEntryPoints := Nil,
 
@@ -70,23 +72,9 @@ object Yeoman extends Plugin {
     stage <<= stage dependsOn (gruntDist),
 
     // Add the views to the dist
-    playAssetsDirectories <+= (yeomanDirectory in Compile)(base => base / "dist"),
+    unmanagedResourceDirectories in Assets <+= (yeomanDirectory in Compile)(base => base / "dist"),
 
-    // Start grunt on play run
-    playOnStarted <+= (yeomanDirectory, yeomanGruntfile) {
-      (base, gruntFile) =>
-        (address: InetSocketAddress) => {
-          Grunt.process = runGrunt(base, gruntFile, "serve" :: "--force" :: Nil)
-        }: Unit
-    },
-
-    // Stop grunt when play run stops
-    playOnStopped += {
-      () => {
-        Grunt.process.map(p => p.destroy())
-        Grunt.process = None
-      }: Unit
-    },
+    playRunHooks <+=(yeomanDirectory, yeomanGruntfile).map{(base,gruntFile)=>Grunt(base,gruntFile)},
 
     // Allow all the specified commands below to be run within sbt
     commands <++= yeomanDirectory {
@@ -145,8 +133,27 @@ object Yeoman extends Plugin {
         state
     }
   }
+
+  object Grunt {
+    def apply(base: File, gruntFile: String): PlayRunHook = {
+
+      object GruntProcess extends PlayRunHook {
+
+        var process: Option[Process] = None
+
+        override def afterStarted(addr: InetSocketAddress): Unit = {
+          process = runGrunt(base, gruntFile, "serve" :: "--force" :: Nil)
+        }
+
+        override def afterStopped(): Unit = {
+          process.map(p => p.destroy())
+          process = None
+        }
+      }
+
+      GruntProcess
+    }
+  }
 }
 
-object Grunt {
-  var process: Option[Process] = None
-}
+
