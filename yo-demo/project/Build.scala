@@ -1,12 +1,13 @@
 import sbt._
 import Keys._
-import play.Project._
 import com.tuplejump.sbt.yeoman.Yeoman
+import play.Play.autoImport._
+import PlayKeys._
 
 object ApplicationBuild extends Build {
 
   val appName = "yo-demo"
-  val appVersion = "1.6.4"
+  val appVersion = "1.7"
 
   val appDependencies = Seq(
     // Add your project dependencies here,
@@ -14,9 +15,11 @@ object ApplicationBuild extends Build {
     anorm
   )
 
-  val appSettings = Yeoman.yeomanSettings ++ Yeoman.withTemplates
+  val appSettings = Seq(version := appVersion, libraryDependencies ++= appDependencies) ++
+    Yeoman.yeomanSettings ++
+    Yeoman.withTemplates
 
-  val main = play.Project(appName, appVersion, appDependencies).settings(
+  val main = Project(appName, file(".")).enablePlugins(play.PlayScala).settings(
     // Add your own project settings here
     appSettings: _*
   )
