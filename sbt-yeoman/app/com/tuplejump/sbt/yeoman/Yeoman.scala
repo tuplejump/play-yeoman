@@ -64,7 +64,7 @@ object Yeoman extends Plugin {
       val base = (yeomanDirectory in Compile).value
       val gruntFile = (yeomanGruntfile in Compile).value
       //stringToProcess("grunt " + (Def.spaceDelimited("<arg>").parsed).mkString(" ")).!!,
-      runGrunt(base, gruntFile, List()).get.exitValue()
+      runGrunt(base, gruntFile, List("--force")).get.exitValue()
     },
 
     dist <<= dist dependsOn (gruntDist),
@@ -74,7 +74,7 @@ object Yeoman extends Plugin {
     // Add the views to the dist
     unmanagedResourceDirectories in Assets <+= (yeomanDirectory in Compile)(base => base / "dist"),
 
-    playRunHooks <+=(yeomanDirectory, yeomanGruntfile).map{(base,gruntFile)=>Grunt(base,gruntFile)},
+    playRunHooks <+= (yeomanDirectory, yeomanGruntfile).map { (base, gruntFile) => Grunt(base, gruntFile)},
 
     // Allow all the specified commands below to be run within sbt
     commands <++= yeomanDirectory {
@@ -104,7 +104,8 @@ object Yeoman extends Plugin {
               (true /: ye.map(s => pathname.getAbsolutePath.startsWith(s)))(_ && _)
             }
           }
-      })
+      }
+  )
 
 
   private def runGrunt(base: sbt.File, gruntFile: String, args: List[String]) = {
@@ -142,7 +143,6 @@ object Yeoman extends Plugin {
 
         var process: Option[Process] = None
 
-
         override def beforeStarted(): Unit = {
           val distProcess = runGrunt(base, gruntFile, "--force" :: Nil)
           distProcess map {
@@ -164,6 +164,7 @@ object Yeoman extends Plugin {
       GruntProcess
     }
   }
+
 }
 
 

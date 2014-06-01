@@ -30,14 +30,11 @@ object Yeoman extends Controller {
       }
   }
 
-  def assetHandler(file: String) = {
-    Play.configuration.getString("yeoman.distDir") match {
-      case Some(distDir) => Assets.at(distDir, file)
-      case None => Assets.at("/ui/dist", file)
-    }
+  def assetHandler(file: String): Action[AnyContent] = {
+    Assets.at("/public", file)
   }
 
-  lazy val atHandler = if (Play.isProd) assetHandler(_: String) else DevAssets.assetHandler(_: String)
+  lazy val atHandler: String => Action[AnyContent] = if (Play.isProd) assetHandler(_: String) else DevAssets.assetHandler(_: String)
 
   def at(file: String): Action[AnyContent] = {
     atHandler(file)
