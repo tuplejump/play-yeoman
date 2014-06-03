@@ -1,0 +1,4 @@
+New in this release -
++ Support Play 2.3.0
++ Using start script generated from stage task works. Github issue #36
+
