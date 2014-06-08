@@ -1,4 +1,32 @@
+This release, is a major upgrade, a long overdue one, to play-yeoman bringing the required play version to 2.3.0. This will also be thee first release in which I don't think I have any contributions and the major work comes from single commiter, *Shiti* ([@eraoferrors](http://twitter.com/eraoferrors) | [github](https://github.com/Shiti))
+
 New in this release -
+
 + Support Play 2.3.0
++ Built on sbt-web
 + Using start script generated from stage task works. Github issue #36
+
+Some other good things for the project are -
+
++ Our "known active" user base is over 25 developers
++ We have got 180 stars in Github!
+
+So go ahead and enjoy the new build!
+Please do report any issues you find to the project on Github.
+
+This release would not have been possible without -
+
++ [Shiti Saxena](https://github.com/Shiti)
++ [Anton Fedchenko](https://github.com/kompot)
++ [Patrick Schulz](https://github.com/pschulz)
++ [Pietari Kettunen](https://github.com/pietrotull)
++ [Oliver](https://github.com/OliverKK)
++ [Scott Holodak](https://github.com/scottt732)
++ [Justin](https://github.com/thejchap)
++ [Radzislaw Galler](https://github.com/rajish)
++ [Markus Klink] (https://github.com/justjoheinz)
++ [Robert Grundler](https://github.com/pulse00)
++ [Diwa](https://github.com/diwa)
++ [Jan Tammen](https://github.com/jtammen)
++ [Mark White](https://github.com/mark9white)
 
