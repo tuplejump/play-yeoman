@@ -40,6 +40,16 @@ addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "play-compatible-version")
 ```
 play-compatible-version = 0.7.0 for Play 2.3.0 and 0.6.4 for Play 2.2.x
 
+If you are really impatient or are using Scala 2.11, you can use the 0.7.1-SNAPSHOT using the following code.
+
+```
+
+resolvers += Resolver.sonatypeRepo("snapshots")
+
+addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.7.1-SNAPSHOT")
+
+```
+
 3) Import Yeoman classes in the project build adding the following import to `project/Build.scala`,
 
 ```scala
@@ -73,6 +83,7 @@ Using 0.7.0
   )
 
 ```
+
 
 Note: If you're using build.sbt instead of the full scala build, you need to place the 2 additions above into `build.sbt` as follows:
 
