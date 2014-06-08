@@ -19,6 +19,7 @@ object ApplicationBuild extends Build {
     libraryDependencies ++= appDependencies,
     // Add your own project settings here
     scalaVersion in Global := "2.10.4",
+    crossScalaVersions := Seq("2.10.4", "2.11.1"),
     homepage := Some(url("https://github.com/tuplejump/play-yeoman")),
     organization := "com.tuplejump",
     organizationName := "Tuplejump Software PVt. Ltd.",
