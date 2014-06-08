@@ -14,7 +14,7 @@ object Yeoman extends Controller {
   def index = Action.async {
     request =>
       if (request.path.endsWith("/")) {
-          at("index.html").apply(request)
+        at("index.html").apply(request)
       } else {
         Future(Redirect(request.path + "/"))
       }
@@ -36,9 +36,8 @@ object Yeoman extends Controller {
 
   lazy val atHandler: String => Action[AnyContent] = if (Play.isProd) assetHandler(_: String) else DevAssets.assetHandler(_: String)
 
-  def at(file: String): Action[AnyContent] = {
-    atHandler(file)
-  }
+  def at(file: String): Action[AnyContent] = atHandler(file)
+
 
 }
 
@@ -47,7 +46,7 @@ object DevAssets extends Controller {
   val runtimeDirs = Play.configuration.getStringList("yeoman.devDirs")
   val basePaths: List[java.io.File] = runtimeDirs match {
     case Some(dirs) => dirs.asScala.map(Play.application.getFile _).toList
-    case None => List(Play.application.getFile("ui/.tmp"), Play.application.getFile("ui/dist"))
+    case None => List(Play.application.getFile("ui/.tmp"), Play.application.getFile("ui/app"))
   }
 
   /**
@@ -63,9 +62,11 @@ object DevAssets extends Controller {
 
     // take the files that exist and generate the response that they would return
     val responses = targetPaths filter {
-      _.exists()
+      file =>
+        file.exists()
     } map {
-      Ok.sendFile(_, inline = true).withHeaders(CACHE_CONTROL -> "no-store")
+      file =>
+        Ok.sendFile(file, inline = true).withHeaders(CACHE_CONTROL -> "no-store")
     }
 
     // return the first valid path, return NotFound if no valid path exists
