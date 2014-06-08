@@ -6,9 +6,11 @@ sbtPlugin := true
 
 version := "0.7.1-SNAPSHOT"
 
+sbtVersion in Global := "0.13.5"
+
 scalaVersion := "2.10.4"
 
-sbtVersion in Global := "0.13.5"
+crossScalaVersions := Seq("2.10.4", "2.11.1")
 
 libraryDependencies += "org.scalatest" % "scalatest_2.10" % "1.9.1" % "test"
 
