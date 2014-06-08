@@ -15,7 +15,7 @@ object ApplicationBuild extends Build {
     anorm
   )
 
-  val appSettings = Seq(version := appVersion, libraryDependencies ++= appDependencies) ++
+  val appSettings = Seq(version := appVersion, libraryDependencies ++= appDependencies, scalaVersion := "2.11.1") ++
     Yeoman.yeomanSettings ++
     Yeoman.withTemplates
 
