@@ -143,14 +143,6 @@ object Yeoman extends Plugin {
 
         var process: Option[Process] = None
 
-        override def beforeStarted(): Unit = {
-          val distProcess = runGrunt(base, gruntFile, "--force" :: Nil)
-          distProcess map {
-            case p: Process =>
-              p.exitValue();
-          }
-        }
-
         override def afterStarted(addr: InetSocketAddress): Unit = {
           process = runGrunt(base, gruntFile, "watch" :: "--force" :: Nil)
         }
