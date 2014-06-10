@@ -50,6 +50,15 @@ addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.7.1-SNAPSHOT")
 
 ```
 
+You will also have to add the snapshot resolver to build (project/Build.scala orr build.sbt) file too,
+
+```
+
+resolvers += Resolver.sonatypeRepo("snapshots")
+
+```
+
+
 3) Import Yeoman classes in the project build adding the following import to `project/Build.scala`,
 
 ```scala
