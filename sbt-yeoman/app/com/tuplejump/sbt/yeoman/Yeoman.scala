@@ -19,7 +19,6 @@ package com.tuplejump.sbt.yeoman
 import sbt._
 import sbt.Keys._
 import java.net.InetSocketAddress
-import scala.Some
 import play.Play.autoImport._
 import PlayKeys._
 import com.typesafe.sbt.web.Import._
@@ -35,10 +34,12 @@ object Yeoman extends Plugin {
 
   val grunt = inputKey[Unit]("Task to run grunt")
 
+  val forceGrunt = SettingKey[Boolean]("key to enable/disable grunt tasks with force option")
+
   private val gruntDist = TaskKey[Unit]("Task to run dist grunt")
 
   val yeomanSettings: Seq[Def.Setting[_]] = Seq(
-    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.7.1-SNAPSHOT" intransitive()),
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.7.1" intransitive()),
 
     // Turn off play's internal less compiler
     lessEntryPoints := Nil,
@@ -53,18 +54,21 @@ object Yeoman extends Plugin {
 
     yeomanGruntfile := "Gruntfile.js",
 
+    forceGrunt := true,
     grunt := {
       val base = (yeomanDirectory in Compile).value
       val gruntFile = (yeomanGruntfile in Compile).value
       //stringToProcess("grunt " + (Def.spaceDelimited("<arg>").parsed).mkString(" ")).!!,
-      runGrunt(base, gruntFile, Def.spaceDelimited("<arg>").parsed.toList).get.exitValue()
+      val isForceEnabled = (forceGrunt in Compile).value
+      runGrunt(base, gruntFile, Def.spaceDelimited("<arg>").parsed.toList, isForceEnabled).get.exitValue()
     },
 
     gruntDist := {
       val base = (yeomanDirectory in Compile).value
       val gruntFile = (yeomanGruntfile in Compile).value
       //stringToProcess("grunt " + (Def.spaceDelimited("<arg>").parsed).mkString(" ")).!!,
-      runGrunt(base, gruntFile, List("--force")).get.exitValue()
+      val isForceEnabled = (forceGrunt in Compile).value
+      runGrunt(base, gruntFile, isForceEnabled = isForceEnabled).get.exitValue()
     },
 
     dist <<= dist dependsOn (gruntDist),
@@ -74,7 +78,9 @@ object Yeoman extends Plugin {
     // Add the views to the dist
     unmanagedResourceDirectories in Assets <+= (yeomanDirectory in Compile)(base => base / "dist"),
 
-    playRunHooks <+= (yeomanDirectory, yeomanGruntfile).map { (base, gruntFile) => Grunt(base, gruntFile)},
+    playRunHooks <+= (yeomanDirectory, yeomanGruntfile, forceGrunt).map {
+      (base, gruntFile, isForceEnabled) => Grunt(base, gruntFile, isForceEnabled)
+    },
 
     // Allow all the specified commands below to be run within sbt
     commands <++= yeomanDirectory {
@@ -107,22 +113,34 @@ object Yeoman extends Plugin {
       }
   )
 
-
-  private def runGrunt(base: sbt.File, gruntFile: String, args: List[String]) = {
+  private def runGrunt(base: sbt.File, gruntFile: String,
+                       args: List[String] = List.empty,
+                       isForceEnabled: Boolean = true): Option[Process] = {
     //println(s"Will run: grunt --gruntfile=$gruntFile $args in ${base.getPath}")
+
+    val arguments = if (isForceEnabled) {
+      args ++ List("--force")
+    } else args
+
+    if (isForceEnabled)
+      println("'force' enabled")
+    else
+      println("'force' not enabled")
+
+
     if (System.getProperty("os.name").startsWith("Windows")) {
-      val process: ProcessBuilder = Process("cmd" :: "/c" :: "grunt" :: "--gruntfile=" + gruntFile :: args, base)
+      val process: ProcessBuilder = Process("cmd" :: "/c" :: "grunt" :: "--gruntfile=" + gruntFile :: arguments, base)
       println(s"Will run: ${process.toString} in ${base.getPath}")
-      Some(process.run)
-    }
-    else {
-      val process: ProcessBuilder = Process("grunt" :: "--gruntfile=" + gruntFile :: args, base)
+      Option(process.run)
+    } else {
+      val process: ProcessBuilder = Process("grunt" :: "--gruntfile=" + gruntFile :: arguments, base)
       println(s"Will run: ${process.toString} in ${base.getPath}")
-      Some(process.run)
+      Option(process.run)
     }
   }
 
   import scala.language.postfixOps
+
   private def cmd(name: String, base: File): Command = {
     if (!base.exists()) (base.mkdirs())
     Command.args(name, "<" + name + "-command>") {
@@ -137,14 +155,14 @@ object Yeoman extends Plugin {
   }
 
   object Grunt {
-    def apply(base: File, gruntFile: String): PlayRunHook = {
+    def apply(base: File, gruntFile: String, isForceEnabled: Boolean): PlayRunHook = {
 
       object GruntProcess extends PlayRunHook {
 
         var process: Option[Process] = None
 
         override def afterStarted(addr: InetSocketAddress): Unit = {
-          process = runGrunt(base, gruntFile, "watch" :: "--force" :: Nil)
+          process = runGrunt(base, gruntFile, "watch" :: Nil, isForceEnabled)
         }
 
         override def afterStopped(): Unit = {

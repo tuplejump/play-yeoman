@@ -4,7 +4,7 @@ organization := "com.tuplejump"
 
 sbtPlugin := true
 
-version := "0.7.1-SNAPSHOT"
+version := "0.7.1"
 
 sbtVersion in Global := "0.13.5"
 
