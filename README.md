@@ -32,16 +32,36 @@ How to use it?
 
 1) Create a new play project or open an existing play project
 
-2) Add the yeoman sbt plugin to the project. Edit project/plugins.sbt to add the following line,
+2) Add the yeoman sbt plugin to the project. Edit `project/plugins.sbt` to add the following line,
 
 ```
-addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.6.4")
+addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "play-compatible-version")
+
+```
+play-compatible-version = 0.7.0 for Play 2.3.0 and 0.6.4 for Play 2.2.x
+
+If you are really impatient or are using Scala 2.11, you can use the 0.7.1-SNAPSHOT using the following code.
 
 ```
 
-3) Import Yeoman classes in the project build adding the following import to project/Build.scala,
+resolvers += Resolver.sonatypeRepo("snapshots")
+
+addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.7.1-SNAPSHOT")
 
 ```
+
+You will also have to add the snapshot resolver to build (project/Build.scala orr build.sbt) file too,
+
+```
+
+resolvers += Resolver.sonatypeRepo("snapshots")
+
+```
+
+
+3) Import Yeoman classes in the project build adding the following import to `project/Build.scala`,
+
+```scala
 
 import com.tuplejump.sbt.yeoman.Yeoman
 
@@ -49,13 +69,52 @@ import com.tuplejump.sbt.yeoman.Yeoman
 
 4) In the same file, add the yeoman settings to your Play project like this,
 
-```
+Using 0.6.4
+
+```scala
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add your own project settings here
     Yeoman.yeomanSettings : _*
   )
 
 ```
+
+
+Using 0.7.0
+
+```scala
+  val appSettings = Seq(version := appVersion, libraryDependencies ++= appDependencies) ++
+    Yeoman.yeomanSettings 
+
+  val main = Project(appName, file(".")).enablePlugins(play.PlayScala).settings(
+    // Add your own project settings here
+    appSettings: _*
+  )
+
+```
+
+
+Note: If you're using build.sbt instead of the full scala build, you need to place the 2 additions above into `build.sbt` as follows:
+
+Using 0.6.4
+
+```scala
+
+import com.tuplejump.sbt.yeoman.Yeoman
+
+name := "play-project"
+
+version := "1.0-SNAPSHOT"
+
+libraryDependencies ++= Seq(
+  javaJdbc,
+  javaEbean,
+  cache
+)
+
+play.Project.playJavaSettings ++ Yeoman.yeomanSettings
+
+``` 
 
 5) Add yeoman routes to the project, appending the following line in conf/routes files,
 
@@ -112,6 +171,27 @@ user yo-demo> sbt
 
 ```
 
+Note: If you are using Scala Templates support in play-yeoman 0.7.0, ensure that "htmlmin" task is not called during the "build" since it does not understand Scala templates. This can be done by updating the build task in Gruntfile.js,
+
+```
+    grunt.registerTask('build', [
+        'clean:dist',
+        'bower-install',
+        'useminPrepare',
+        'concurrent:dist',
+        'autoprefixer',
+        'concat',
+        'ngmin',
+        'copy:dist',
+        'cdnify',
+        'cssmin',
+        'uglify',
+        'rev',
+        'usemin'/*,
+        'htmlmin' */
+    ]);
+```
+
 10) Run your play application,
 
 ```
@@ -136,6 +216,8 @@ To use Scala templates you have 2 options,
 
 * All you have to do to enable it is add Yeoman.withTemplates settings to the app settings, so your play project will now look like this,
 
+Using 0.6.4
+
 ```
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add your own project settings here
@@ -143,10 +225,28 @@ To use Scala templates you have 2 options,
   )
 
 ```
+
+Using 0.7.0
+
+```
+   val appSettings = Seq(version := appVersion, libraryDependencies ++= appDependencies) ++
+       Yeoman.yeomanSettings ++
+       Yeoman.withTemplates
+   
+   val main = Project(appName, file(".")).enablePlugins(play.PlayScala).settings(
+       // Add your own project settings here
+      appSettings: _*
+   )
+
+```
+
 * Once that is done play will compile the templates from yeoman directory too, and you can use them in your controllers. This helps you keep all your UI files together under the yeoman directory ('ui' by default)
 
 * Look at the yo-demo project for details!
 
+Note: In 0.7.0, play-yeoman supports compilation of views from the yeoman directory but cannot recompile them when they are modified with the server running. You will need to stop the server and start it again.
+
+* If you use scala template support, you need to run grunt prior to compile else the template code will not be generated. This is not required if you execute run or stage directly since they have a dependency on grunt.  
 
 ### Taking it to production
 

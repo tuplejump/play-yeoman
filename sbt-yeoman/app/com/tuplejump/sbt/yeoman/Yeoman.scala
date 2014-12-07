@@ -18,12 +18,14 @@ package com.tuplejump.sbt.yeoman
 
 import sbt._
 import sbt.Keys._
-import play.Project._
 import java.net.InetSocketAddress
-import scala.Some
+import play.Play.autoImport._
+import PlayKeys._
+import com.typesafe.sbt.web.Import._
 
 import com.typesafe.sbt.packager.universal.Keys._
-
+import play.PlayRunHook
+import play.twirl.sbt.Import._
 
 object Yeoman extends Plugin {
   val yeomanDirectory = SettingKey[File]("yeoman-directory")
@@ -32,15 +34,16 @@ object Yeoman extends Plugin {
 
   val grunt = inputKey[Unit]("Task to run grunt")
 
+  val forceGrunt = SettingKey[Boolean]("key to enable/disable grunt tasks with force option")
+
   private val gruntDist = TaskKey[Unit]("Task to run dist grunt")
 
-  val yeomanSettings = Seq(
-    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.6.4" intransitive()),
+  val yeomanSettings: Seq[Def.Setting[_]] = Seq(
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.7.1" intransitive()),
 
     // Turn off play's internal less compiler
     lessEntryPoints := Nil,
 
-    // Turn off play's internal javascript compiler
     // Turn off play's internal javascript compiler
     javascriptEntryPoints := Nil,
 
@@ -51,18 +54,21 @@ object Yeoman extends Plugin {
 
     yeomanGruntfile := "Gruntfile.js",
 
+    forceGrunt := true,
     grunt := {
       val base = (yeomanDirectory in Compile).value
       val gruntFile = (yeomanGruntfile in Compile).value
       //stringToProcess("grunt " + (Def.spaceDelimited("<arg>").parsed).mkString(" ")).!!,
-      runGrunt(base, gruntFile, Def.spaceDelimited("<arg>").parsed.toList).get.exitValue()
+      val isForceEnabled = (forceGrunt in Compile).value
+      runGrunt(base, gruntFile, Def.spaceDelimited("<arg>").parsed.toList, isForceEnabled).get.exitValue()
     },
 
     gruntDist := {
       val base = (yeomanDirectory in Compile).value
       val gruntFile = (yeomanGruntfile in Compile).value
       //stringToProcess("grunt " + (Def.spaceDelimited("<arg>").parsed).mkString(" ")).!!,
-      runGrunt(base, gruntFile, List()).get.exitValue()
+      val isForceEnabled = (forceGrunt in Compile).value
+      runGrunt(base, gruntFile, isForceEnabled = isForceEnabled).get.exitValue()
     },
 
     dist <<= dist dependsOn (gruntDist),
@@ -70,22 +76,10 @@ object Yeoman extends Plugin {
     stage <<= stage dependsOn (gruntDist),
 
     // Add the views to the dist
-    playAssetsDirectories <+= (yeomanDirectory in Compile)(base => base / "dist"),
+    unmanagedResourceDirectories in Assets <+= (yeomanDirectory in Compile)(base => base / "dist"),
 
-    // Start grunt on play run
-    playOnStarted <+= (yeomanDirectory, yeomanGruntfile) {
-      (base, gruntFile) =>
-        (address: InetSocketAddress) => {
-          Grunt.process = runGrunt(base, gruntFile, "server" :: "--force" :: Nil)
-        }: Unit
-    },
-
-    // Stop grunt when play run stops
-    playOnStopped += {
-      () => {
-        Grunt.process.map(p => p.destroy())
-        Grunt.process = None
-      }: Unit
+    playRunHooks <+= (yeomanDirectory, yeomanGruntfile, forceGrunt).map {
+      (base, gruntFile, isForceEnabled) => Grunt(base, gruntFile, isForceEnabled)
     },
 
     // Allow all the specified commands below to be run within sbt
@@ -100,12 +94,13 @@ object Yeoman extends Plugin {
     }
   )
 
+
   val withTemplates = Seq(
-    unmanagedSourceDirectories in Compile ++= Seq(Yeoman.yeomanDirectory.value / "app"),
+    sourceDirectories in TwirlKeys.compileTemplates in Compile ++= Seq(Yeoman.yeomanDirectory.value / "dist"),
     yeomanExcludes <<= (yeomanDirectory)(yd => Seq(
-      yd + "/app/components/",
-      yd + "/app/images/",
-      yd + "/app/styles/"
+      yd + "/dist/components/",
+      yd + "/dist/images/",
+      yd + "/dist/styles/"
     )),
     excludeFilter in unmanagedSources <<=
       (excludeFilter in unmanagedSources, yeomanExcludes) {
@@ -115,23 +110,36 @@ object Yeoman extends Plugin {
               (true /: ye.map(s => pathname.getAbsolutePath.startsWith(s)))(_ && _)
             }
           }
-      })
+      }
+  )
 
-
-  private def runGrunt(base: sbt.File, gruntFile: String, args: List[String]) = {
+  private def runGrunt(base: sbt.File, gruntFile: String,
+                       args: List[String] = List.empty,
+                       isForceEnabled: Boolean = true): Option[Process] = {
     //println(s"Will run: grunt --gruntfile=$gruntFile $args in ${base.getPath}")
+
+    val arguments = if (isForceEnabled) {
+      args ++ List("--force")
+    } else args
+
+    if (isForceEnabled)
+      println("'force' enabled")
+    else
+      println("'force' not enabled")
+
+
     if (System.getProperty("os.name").startsWith("Windows")) {
-      val process: ProcessBuilder = Process("cmd" :: "/c" :: "grunt" :: "--gruntfile=" + gruntFile :: args, base)
+      val process: ProcessBuilder = Process("cmd" :: "/c" :: "grunt" :: "--gruntfile=" + gruntFile :: arguments, base)
       println(s"Will run: ${process.toString} in ${base.getPath}")
-      Some(process.run)
-    }
-    else {
-      val process: ProcessBuilder = Process("grunt" :: "--gruntfile=" + gruntFile :: args, base)
+      Option(process.run)
+    } else {
+      val process: ProcessBuilder = Process("grunt" :: "--gruntfile=" + gruntFile :: arguments, base)
       println(s"Will run: ${process.toString} in ${base.getPath}")
-      Some(process.run)
+      Option(process.run)
     }
   }
 
+  import scala.language.postfixOps
 
   private def cmd(name: String, base: File): Command = {
     if (!base.exists()) (base.mkdirs())
@@ -145,8 +153,28 @@ object Yeoman extends Plugin {
         state
     }
   }
+
+  object Grunt {
+    def apply(base: File, gruntFile: String, isForceEnabled: Boolean): PlayRunHook = {
+
+      object GruntProcess extends PlayRunHook {
+
+        var process: Option[Process] = None
+
+        override def afterStarted(addr: InetSocketAddress): Unit = {
+          process = runGrunt(base, gruntFile, "watch" :: Nil, isForceEnabled)
+        }
+
+        override def afterStopped(): Unit = {
+          process.map(p => p.destroy())
+          process = None
+        }
+      }
+
+      GruntProcess
+    }
+  }
+
 }
 
-object Grunt {
-  var process: Option[Process] = None
-}
+
