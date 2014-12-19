@@ -38,7 +38,7 @@ How to use it?
 addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "play-compatible-version")
 
 ```
-play-compatible-version = 0.7.1 for Play 2.3.0 and 0.6.4 for Play 2.2.x
+play-compatible-version = 0.8.0-SNAPSHOT for Play 2.4.0-M2+, 0.7.1 for Play 2.3.0 and 0.6.4 for Play 2.2.x
 
 Note: support for Scala 2.11 is available from version 0.7.1 
 

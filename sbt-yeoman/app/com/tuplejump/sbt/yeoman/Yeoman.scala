@@ -39,13 +39,7 @@ object Yeoman extends Plugin {
   private val gruntDist = TaskKey[Unit]("Task to run dist grunt")
 
   val yeomanSettings: Seq[Def.Setting[_]] = Seq(
-    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.7.1" intransitive()),
-
-    // Turn off play's internal less compiler
-    lessEntryPoints := Nil,
-
-    // Turn off play's internal javascript compiler
-    javascriptEntryPoints := Nil,
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.8.0-SNAPSHOT" intransitive()),
 
     // Where does the UI live?
     yeomanDirectory <<= (baseDirectory in Compile) {
