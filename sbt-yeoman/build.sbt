@@ -4,7 +4,7 @@ organization := "com.tuplejump"
 
 sbtPlugin := true
 
-version := "0.8.0-SNAPSHOT"
+version := "0.8.1-SNAPSHOT"
 
 sbtVersion in Global := "0.13.5"
 
@@ -39,6 +39,7 @@ Seq(
 
 publishMavenStyle := true
 
+/*
 publishTo <<= version { (v: String) =>
   val nexus = "https://oss.sonatype.org/"
   if (v.trim.endsWith("SNAPSHOT"))
@@ -48,7 +49,7 @@ publishTo <<= version { (v: String) =>
 }
 
 publishArtifact in Test := false
-
+*/
 pomIncludeRepository := { _ => false }
 
 pomExtra := (

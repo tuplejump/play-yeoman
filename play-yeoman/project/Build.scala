@@ -6,7 +6,7 @@ import PlayKeys._
 object ApplicationBuild extends Build {
 
   val appName = "play-yeoman"
-  val appVersion = "0.8.0-SNAPSHOT"
+  val appVersion = "0.8.1-SNAPSHOT"
 
   val appDependencies = Seq(
     // Add your project dependencies here,
