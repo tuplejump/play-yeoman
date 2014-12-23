@@ -38,6 +38,9 @@ object Yeoman extends Plugin {
 
   private val gruntDist = TaskKey[Unit]("Task to run dist grunt")
 
+  private val gruntClean = TaskKey[Unit]("Task to run grunt clean")
+
+
   val yeomanSettings: Seq[Def.Setting[_]] = Seq(
     libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.8.0-SNAPSHOT" intransitive()),
 
@@ -60,14 +63,21 @@ object Yeoman extends Plugin {
     gruntDist := {
       val base = (yeomanDirectory in Compile).value
       val gruntFile = (yeomanGruntfile in Compile).value
+      runGrunt(base, gruntFile, List("build-dist")).get.exitValue()
+    },
+
+    gruntClean := {
+      val base = (yeomanDirectory in Compile).value
+      val gruntFile = (yeomanGruntfile in Compile).value
       //stringToProcess("grunt " + (Def.spaceDelimited("<arg>").parsed).mkString(" ")).!!,
-      val isForceEnabled = (forceGrunt in Compile).value
-      runGrunt(base, gruntFile, isForceEnabled = isForceEnabled).get.exitValue()
+      runGrunt(base, gruntFile, List("clean")).get.exitValue()
     },
 
     dist <<= dist dependsOn (gruntDist),
 
     stage <<= stage dependsOn (gruntDist),
+
+    clean <<= clean dependsOn (gruntClean),
 
     // Add the views to the dist
     unmanagedResourceDirectories in Assets <+= (yeomanDirectory in Compile)(base => base / "dist"),
@@ -90,7 +100,7 @@ object Yeoman extends Plugin {
 
 
   val withTemplates = Seq(
-    sourceDirectories in TwirlKeys.compileTemplates in Compile ++= Seq(Yeoman.yeomanDirectory.value / "dist"),
+    sourceDirectories in TwirlKeys.compileTemplates in Compile ++= Seq(Yeoman.yeomanDirectory.value / "twirl"),
     yeomanExcludes <<= (yeomanDirectory)(yd => Seq(
       yd + "/dist/components/",
       yd + "/dist/images/",
@@ -152,11 +162,14 @@ object Yeoman extends Plugin {
     def apply(base: File, gruntFile: String, isForceEnabled: Boolean): PlayRunHook = {
 
       object GruntProcess extends PlayRunHook {
-
         var process: Option[Process] = None
 
+        override def beforeStarted(): Unit = {
+          runGrunt(base, gruntFile, "build-dev" :: Nil)
+        }
+
         override def afterStarted(addr: InetSocketAddress): Unit = {
-          process = runGrunt(base, gruntFile, "watch" :: Nil, isForceEnabled)
+          process = runGrunt(base, gruntFile, "watch" :: Nil)
         }
 
         override def afterStopped(): Unit = {
