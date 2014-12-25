@@ -197,12 +197,12 @@ module.exports = function (grunt) {
     // To fully minify generated html, use https://github.com/mohiva/play-html-compressor
     replace: {
       htmlmin: {
-	src: ['<%= yeoman.dist %>/**/*.html'],  // source files array (supports minimatch)
-	overwrite: true,
-	replacements: [
-	  {from: /^\s+/mg, to: ''},
-	  {from: /\s\s+/mg, to: ' '}
-	]
+        src: ['<%= yeoman.dist %>/**/*.html'],  // source files array (supports minimatch)
+        overwrite: true,
+        replacements: [
+          {from: /^\s+/mg, to: ''},
+          {from: /\s\s+/mg, to: ' '}
+        ]
       }
     },
 
@@ -285,12 +285,12 @@ module.exports = function (grunt) {
     // To fully minify generated html, use https://github.com/mohiva/play-html-compressor
     replace: {
       htmlmin: {
-	src: ['<%= yeoman.dist %>/**/*.html'],  // source files array (supports minimatch)
-	overwrite: true,
-	replacements: [
-	  {from: /^\s+/mg, to: ''},
-	  {from: /\s\s+/mg, to: ' '}
-	]
+        src: ['<%= yeoman.dist %>/**/*.html'],  // source files array (supports minimatch)
+        overwrite: true,
+        replacements: [
+          {from: /^\s+/mg, to: ''},
+          {from: /\s\s+/mg, to: ' '}
+        ]
       }
     },
 
@@ -300,50 +300,50 @@ module.exports = function (grunt) {
     // Copies remaining files to places other tasks can use
     copy: {
       'twirl-dev': {
-	files: [{
-	  expand: true,
-	  dot: true,
-	  cwd: '<%= yeoman.app %>',
-	  dest: '<%= yeoman.dist %>',
-	  src: ['**/*.scala.html']
-	}]
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.app %>',
+          dest: '<%= yeoman.dist %>',
+          src: ['**/*.scala.html']
+        }]
       },
       'twirl-dist': {
-	files: [{
-	  expand: true,
-	  dot: true,
-	  cwd: '<%= yeoman.dist %>',
-	  dest: 'twirl',
-	  src: ['**/*.scala.html']
-	}]
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.dist %>',
+          dest: 'twirl',
+          src: ['**/*.scala.html']
+        }]
       },
       dist: {
-	files: [{
-	  expand: true,
-	  dot: true,
-	  cwd: '<%= yeoman.app %>',
-	  dest: '<%= yeoman.dist %>',
-	  src: [
-	    '*.{ico,png,txt}',
-	    '.htaccess',
-	    '*.html',
-	    'views/**/*.html',
-	    'views/**/*.txt',
-	    'images/**/*.{webp}',
-	    'fonts/**/*.*'
-	  ]
-	}, {
-	  expand: true,
-	  cwd: '.tmp/images',
-	  dest: '<%= yeoman.dist %>/images',
-	  src: ['generated/*']
-	}]
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.app %>',
+          dest: '<%= yeoman.dist %>',
+          src: [
+            '*.{ico,png,txt}',
+            '.htaccess',
+            '*.html',
+            'views/**/*.html',
+            'views/**/*.txt',
+            'images/**/*.{webp}',
+            'fonts/**/*.*'
+          ]
+        }, {
+          expand: true,
+          cwd: '.tmp/images',
+          dest: '<%= yeoman.dist %>/images',
+          src: ['generated/*']
+        }]
       },
       styles: {
-	expand: true,
-	cwd: '<%= yeoman.app %>/styles',
-	dest: '.tmp/styles/',
-	src: '{,*/}*.css'
+        expand: true,
+        cwd: '<%= yeoman.app %>/styles',
+        dest: '.tmp/styles/',
+        src: '{,*/}*.css'
       },
       ...
     }, // end 'copy'
