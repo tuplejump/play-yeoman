@@ -29,6 +29,7 @@ import play.twirl.sbt.Import._
 
 object Yeoman extends Plugin {
   val yeomanDirectory = SettingKey[File]("yeoman-directory")
+
   val yeomanGruntfile = SettingKey[String]("yeoman-gruntfile")
   val yeomanExcludes = sbt.SettingKey[Seq[String]]("yeoman-excludes")
 
@@ -36,13 +37,13 @@ object Yeoman extends Plugin {
 
   val forceGrunt = SettingKey[Boolean]("key to enable/disable grunt tasks with force option")
 
-  private val gruntDist = TaskKey[Unit]("Task to run dist grunt")
-
-  private val gruntClean = TaskKey[Unit]("Task to run grunt clean")
+  val gruntDev  = TaskKey[Unit]("Task to run grunt build-dev")
+  val gruntDist = TaskKey[Unit]("Task to run grunt build-dist")
+  val gruntClean = TaskKey[Unit]("Task to run grunt clean")
 
 
   val yeomanSettings: Seq[Def.Setting[_]] = Seq(
-    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.8.1-SNAPSHOT" intransitive()),
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.8.4-SNAPSHOT" intransitive()),
 
     // Where does the UI live?
     yeomanDirectory <<= (baseDirectory in Compile) {
@@ -55,22 +56,26 @@ object Yeoman extends Plugin {
     grunt := {
       val base = (yeomanDirectory in Compile).value
       val gruntFile = (yeomanGruntfile in Compile).value
-      //stringToProcess("grunt " + (Def.spaceDelimited("<arg>").parsed).mkString(" ")).!!,
       val isForceEnabled = (forceGrunt in Compile).value
-      runGrunt(base, gruntFile, Def.spaceDelimited("<arg>").parsed.toList, isForceEnabled).get.exitValue()
+      runGrunt1(base, gruntFile, Def.spaceDelimited("<arg>").parsed.toList, isForceEnabled)
+    },
+
+    gruntDev := {
+      val base = (yeomanDirectory in Compile).value
+      val gruntFile = (yeomanGruntfile in Compile).value
+      runGrunt1(base, gruntFile, List("build-dev"))
     },
 
     gruntDist := {
       val base = (yeomanDirectory in Compile).value
       val gruntFile = (yeomanGruntfile in Compile).value
-      runGrunt(base, gruntFile, List("build-dist")).get.exitValue()
+      runGrunt1(base, gruntFile, List("build-dist"))
     },
 
     gruntClean := {
       val base = (yeomanDirectory in Compile).value
       val gruntFile = (yeomanGruntfile in Compile).value
-      //stringToProcess("grunt " + (Def.spaceDelimited("<arg>").parsed).mkString(" ")).!!,
-      runGrunt(base, gruntFile, List("clean")).get.exitValue()
+      runGrunt1(base, gruntFile, List("clean"))
     },
 
     dist <<= dist dependsOn (gruntDist),
@@ -100,7 +105,7 @@ object Yeoman extends Plugin {
 
 
   val withTemplates = Seq(
-    sourceDirectories in TwirlKeys.compileTemplates in Compile ++= Seq(Yeoman.yeomanDirectory.value / "twirl"),
+    sourceDirectories in TwirlKeys.compileTemplates in Compile ++= Seq(Yeoman.yeomanDirectory.value / "dist"),
     yeomanExcludes <<= (yeomanDirectory)(yd => Seq(
       yd + "/dist/components/",
       yd + "/dist/images/",
@@ -114,7 +119,9 @@ object Yeoman extends Plugin {
               (true /: ye.map(s => pathname.getAbsolutePath.startsWith(s)))(_ && _)
             }
           }
-      }
+      },
+    // I'm unsure, but think that it is needed:
+    playMonitoredFiles <<= playMonitoredFiles dependsOn gruntDev
   )
 
   private def runGrunt(base: sbt.File, gruntFile: String,
@@ -141,6 +148,18 @@ object Yeoman extends Plugin {
       println(s"Will run: ${process.toString} in ${base.getPath}")
       Option(process.run)
     }
+  }
+
+  /**
+   * Wrapper for runGrunt() to reduce code duplication.
+   * @param args cmd line arguments.
+   * @param isForceEnabled grunt force flag.
+   * @return Process return code.
+   */
+  private def runGrunt1(base: File, gruntFile: String, args: List[String] = List.empty,  isForceEnabled: Boolean = true): Int = {
+    runGrunt(base, gruntFile, args, isForceEnabled)
+      .get
+      .exitValue()
   }
 
   import scala.language.postfixOps
