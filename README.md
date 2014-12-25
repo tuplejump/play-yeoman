@@ -174,13 +174,17 @@ Note: If you are using Scala Templates support in play-yeoman 0.7.1, ensure that
         'usemin'/*,
         'htmlmin' */
     ]);
+```
 
 For scala templates early minification you can use `grunt-text-replace` task.
 In file `app/package.json` in section `devDependencies` add
+
 ```
   "grunt-text-replace": "^0.4.0"
 ```
+
 Do not forget to call `npm install` in sbt console and edit your `app/Gruntfile.js` in following way:
+
 ```
 ...
 module.exports = function (grunt) {
