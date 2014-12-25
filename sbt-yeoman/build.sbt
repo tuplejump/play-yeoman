@@ -4,19 +4,19 @@ organization := "com.tuplejump"
 
 sbtPlugin := true
 
-version := "0.7.1"
+version := "0.8.4-SNAPSHOT"
 
 sbtVersion in Global := "0.13.5"
 
 scalaVersion := "2.10.4"
 
-libraryDependencies += "org.scalatest" % "scalatest_2.10" % "1.9.1" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "1.9.1" % "test"
 
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.3.0")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.4.0-M2")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-web" % "1.0.0")
+addSbtPlugin("com.typesafe.sbt" % "sbt-web" % "1.0.2")
 
 licenses := Seq("Apache License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0"))
 
@@ -39,6 +39,7 @@ Seq(
 
 publishMavenStyle := true
 
+/*
 publishTo <<= version { (v: String) =>
   val nexus = "https://oss.sonatype.org/"
   if (v.trim.endsWith("SNAPSHOT"))
@@ -48,7 +49,7 @@ publishTo <<= version { (v: String) =>
 }
 
 publishArtifact in Test := false
-
+*/
 pomIncludeRepository := { _ => false }
 
 pomExtra := (

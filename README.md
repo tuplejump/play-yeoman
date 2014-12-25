@@ -38,7 +38,7 @@ How to use it?
 addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "play-compatible-version")
 
 ```
-play-compatible-version = 0.7.1 for Play 2.3.0 and 0.6.4 for Play 2.2.x
+play-compatible-version = 0.8.0-SNAPSHOT for Play 2.4.0-M2+, 0.7.1 for Play 2.3.0 and 0.6.4 for Play 2.2.x
 
 Note: support for Scala 2.11 is available from version 0.7.1 
 
@@ -176,6 +176,40 @@ Note: If you are using Scala Templates support in play-yeoman 0.7.1, ensure that
     ]);
 ```
 
+For scala templates early minification you can use `grunt-text-replace` task.
+In file `app/package.json` in section `devDependencies` add
+
+```
+  "grunt-text-replace": "^0.4.0"
+```
+
+Do not forget to call `npm install` in sbt console and edit your `app/Gruntfile.js` in following way:
+
+```
+...
+module.exports = function (grunt) {
+  
+  ...
+  grunt.initConfig({
+    ...
+    // Add replace:htmlmin task.
+    // Using simple regex replace to minify html templates instead of htmlmin, because htmlmin will not/never work stable on scala templates.
+    // To fully minify generated html, use https://github.com/mohiva/play-html-compressor
+    replace: {
+      htmlmin: {
+        src: ['<%= yeoman.dist %>/**/*.html'],  // source files array (supports minimatch)
+        overwrite: true,
+        replacements: [
+          {from: /^\s+/mg, to: ''},
+          {from: /\s\s+/mg, to: ' '}
+        ]
+      }
+    },
+
+    ...
+```
+For taking support of scala templates recompilation on reload, read next section carefully before `run`.
+
 10) Run your play application,
 
 ```
@@ -224,6 +258,128 @@ Using 0.7.1
 
 ```
 
+Using 0.8.4+ (play 2.4+)
+Edit your `app/Gruntfile.js` in following way:
+```
+...
+module.exports = function (grunt) {
+  
+  ...
+  grunt.initConfig({
+    ...
+
+    // Add watch:scalaTpl task.
+    // During sbt run, will copy any modified scala templates into dist directory.
+    // PlayReloader will see changes in dist in every reload and recompile changed scala templates.
+    watch: {
+      ...
+      scalaTpl: {
+        files: ['<%= yeoman.app %>/views/**/*.scala.*'],                                                                                                               
+        tasks: ['newer:copy:twirl-dev']
+      }
+    },
+
+    ...
+    // Add replace:htmlmin task.
+    // Using simple regex replace to minify html templates instead of htmlmin, because htmlmin will not/never work stable on scala templates.
+    // To fully minify generated html, use https://github.com/mohiva/play-html-compressor
+    replace: {
+      htmlmin: {
+        src: ['<%= yeoman.dist %>/**/*.html'],  // source files array (supports minimatch)
+        overwrite: true,
+        replacements: [
+          {from: /^\s+/mg, to: ''},
+          {from: /\s\s+/mg, to: ' '}
+        ]
+      }
+    },
+
+    ...
+
+    // Add copy tasks for twirl templates.
+    // Copies remaining files to places other tasks can use
+    copy: {
+      'twirl-dev': {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.app %>',
+          dest: '<%= yeoman.dist %>',
+          src: ['**/*.scala.html']
+        }]
+      },
+      'twirl-dist': {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.dist %>',
+          dest: 'twirl',
+          src: ['**/*.scala.html']
+        }]
+      },
+      dist: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.app %>',
+          dest: '<%= yeoman.dist %>',
+          src: [
+            '*.{ico,png,txt}',
+            '.htaccess',
+            '*.html',
+            'views/**/*.html',
+            'views/**/*.txt',
+            'images/**/*.{webp}',
+            'fonts/**/*.*'
+          ]
+        }, {
+          expand: true,
+          cwd: '.tmp/images',
+          dest: '<%= yeoman.dist %>/images',
+          src: ['generated/*']
+        }]
+      },
+      styles: {
+        expand: true,
+        cwd: '<%= yeoman.app %>/styles',
+        dest: '.tmp/styles/',
+        src: '{,*/}*.css'
+      },
+      ...
+    }, // end 'copy'
+
+    ...
+  }
+
+  // 'build' task not used, you can remove it. Add build-dev and build-dist tasks in such way:
+  grunt.registerTask('build-dev', [
+    'copy:twirl-dev',
+  ]);
+
+  grunt.registerTask('build-dist', [
+    'clean:dist',
+    'wiredep',
+    'useminPrepare',
+    'concurrent:dist',
+    'autoprefixer',
+    'concat',
+    'ngAnnotate',
+    'copy:dist',
+    'cdnify',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'replace:htmlmin',
+    'copy:twirl-dist'
+  ]);
+  
+  ...
+```
+As you can see, Gruntfile described does not use `htmlmin` postprocessor.
+If you are also have no plans to use it, feel free to remove it from `package.json` dependencies.
+
+
 * Once that is done play will compile the templates from yeoman directory too, and you can use them in your controllers. This helps you keep all your UI files together under the yeoman directory ('ui' by default)
 
 * Look at the yo-demo project for details!
@@ -231,6 +387,9 @@ Using 0.7.1
 Note: In 0.7.1, play-yeoman supports compilation of views from the yeoman directory but cannot recompile them when they are modified with the server running. You will need to stop the server and start it again.
 
 * If you use scala template support, you need to run grunt prior to compile else the template code will not be generated. This is not required if you execute run or stage directly since they have a dependency on grunt.  
+
+* You can fix this problems via `Gruntfile.js` (see 0.8.4+ section above).
+
 
 ### Taking it to production
 
