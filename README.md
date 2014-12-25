@@ -377,7 +377,7 @@ module.exports = function (grunt) {
   ...
 ```
 As you can see, Gruntfile described does not use `htmlmin` postprocessor.
-If you are alse not use it, feel free to remove it from `package.json` dependencies.
+If you are also have no plans to use it, feel free to remove it from `package.json` dependencies.
 
 
 * Once that is done play will compile the templates from yeoman directory too, and you can use them in your controllers. This helps you keep all your UI files together under the yeoman directory ('ui' by default)
