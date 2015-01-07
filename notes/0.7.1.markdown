@@ -1,0 +1,5 @@
+New in this release -
+
++ Support for Scala 2.11
++ fixes #50
++ a setting to disable --force option on grunt tasks (fixes #40)

@@ -38,25 +38,9 @@ How to use it?
 addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "play-compatible-version")
 
 ```
-play-compatible-version = 0.7.0 for Play 2.3.0 and 0.6.4 for Play 2.2.x
+play-compatible-version = 0.7.1 for Play 2.3.0 and 0.6.4 for Play 2.2.x
 
-If you are really impatient or are using Scala 2.11, you can use the 0.7.1-SNAPSHOT using the following code.
-
-```
-
-resolvers += Resolver.sonatypeRepo("snapshots")
-
-addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "0.7.1-SNAPSHOT")
-
-```
-
-You will also have to add the snapshot resolver to build (project/Build.scala orr build.sbt) file too,
-
-```
-
-resolvers += Resolver.sonatypeRepo("snapshots")
-
-```
+Note: support for Scala 2.11 is available from version 0.7.1 
 
 
 3) Import Yeoman classes in the project build adding the following import to `project/Build.scala`,
@@ -80,7 +64,7 @@ Using 0.6.4
 ```
 
 
-Using 0.7.0
+Using 0.7.1
 
 ```scala
   val appSettings = Seq(version := appVersion, libraryDependencies ++= appDependencies) ++
@@ -171,7 +155,7 @@ user yo-demo> sbt
 
 ```
 
-Note: If you are using Scala Templates support in play-yeoman 0.7.0, ensure that "htmlmin" task is not called during the "build" since it does not understand Scala templates. This can be done by updating the build task in Gruntfile.js,
+Note: If you are using Scala Templates support in play-yeoman 0.7.1, ensure that "htmlmin" task is not called during the "build" since it does not understand Scala templates. This can be done by updating the build task in Gruntfile.js,
 
 ```
     grunt.registerTask('build', [
@@ -226,7 +210,7 @@ Using 0.6.4
 
 ```
 
-Using 0.7.0
+Using 0.7.1
 
 ```
    val appSettings = Seq(version := appVersion, libraryDependencies ++= appDependencies) ++
@@ -244,7 +228,7 @@ Using 0.7.0
 
 * Look at the yo-demo project for details!
 
-Note: In 0.7.0, play-yeoman supports compilation of views from the yeoman directory but cannot recompile them when they are modified with the server running. You will need to stop the server and start it again.
+Note: In 0.7.1, play-yeoman supports compilation of views from the yeoman directory but cannot recompile them when they are modified with the server running. You will need to stop the server and start it again.
 
 * If you use scala template support, you need to run grunt prior to compile else the template code will not be generated. This is not required if you execute run or stage directly since they have a dependency on grunt.  
 
@@ -264,6 +248,11 @@ For this purpose play-yeoman provides 2 settings that you can use in you play pr
 2) yeoman.devDirs - This is a List of String that takes a list of locations where play-yeoman should look for files in development mode i.e. when run using sbt run.
 
 
+Note: Starting from 0.7.1, it is possible to disable force option on execution of grunt tasks. This can be done by adding the following to the application build settings,
+
+```
+Yeoman.forceGrunt := false
+```
 
 Licence
 =======
