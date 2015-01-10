@@ -1,0 +1,4 @@
+New in this release -
+
+* This is a minor bug fix release over [v0.7.1]
+* tasks dist and stage result in an error when grunt fails if grunt force is disabled. The method dependsOn has been removed from sbt since 0.13.0. Refer [sbt issue#1001](https://github.com/sbt/sbt/issues/1001)
