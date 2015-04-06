@@ -23,7 +23,7 @@ import play.Play.autoImport._
 import PlayKeys._
 import com.typesafe.sbt.web.Import._
 
-import com.typesafe.sbt.packager.universal.Keys._
+import com.typesafe.sbt.packager.Keys._
 import play.PlayRunHook
 import play.twirl.sbt.Import._
 
@@ -43,7 +43,7 @@ object Yeoman extends Plugin {
 
 
   val yeomanSettings: Seq[Def.Setting[_]] = Seq(
-    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.8.5-SNAPSHOT" intransitive()),
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.8.7-SNAPSHOT" intransitive()),
 
     // Where does the UI live?
     yeomanDirectory <<= (baseDirectory in Compile) {

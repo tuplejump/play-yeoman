@@ -4,7 +4,7 @@ organization := "com.tuplejump"
 
 sbtPlugin := true
 
-version := "0.8.5-SNAPSHOT"
+version := "0.8.7-SNAPSHOT"
 
 sbtVersion in Global := "0.13.5"
 
@@ -14,7 +14,7 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "1.9.1" % "test"
 
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.4.0-M2")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.4.0-M3")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-web" % "1.0.2")
 
