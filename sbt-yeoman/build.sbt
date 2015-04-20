@@ -4,7 +4,7 @@ organization := "com.tuplejump"
 
 sbtPlugin := true
 
-version := "0.7.2"
+version := "0.7.3"
 
 sbtVersion in Global := "0.13.5"
 
@@ -57,6 +57,11 @@ pomExtra := (
     <connection>scm:git:git@github.com:tuplejump/play-yeoman.git</connection>
   </scm>
   <developers>
+    <developer>
+      <id>eraoferrors</id>
+      <name>Shiti Saxena</name>
+      <url>https://twitter.com/Shiti</url>
+    </developer>
     <developer>
       <id>milliondreams</id>
       <name>Rohit Rai</name>
