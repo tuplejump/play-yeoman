@@ -1,6 +1,8 @@
 play-yeoman
 ===========
 
+[![Join the chat at https://gitter.im/tuplejump/play-yeoman](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tuplejump/play-yeoman?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 **play-yeoman** is a sbt+play plugin that brings the streamlined frontend development workflow and optimized build system of [yeoman](http://yeoman.io) to [Play 2.0](http://playframework.org).
 
 In this approach, you would use play for developing the application backend/services and develop the frontend/ui using the yeoman toolchain, all in a totally integrated workflow and single unified console.
