@@ -19,11 +19,11 @@ package com.tuplejump.sbt.yeoman
 import sbt._
 import sbt.Keys._
 import java.net.InetSocketAddress
-import play.Play.autoImport._
+import play.sbt.Play.autoImport._
 import PlayKeys._
 import com.typesafe.sbt.web.Import._
 
-import com.typesafe.sbt.packager.universal.Keys._
+import com.typesafe.sbt.packager.Keys._
 import play.PlayRunHook
 import play.twirl.sbt.Import._
 
@@ -39,13 +39,7 @@ object Yeoman extends Plugin {
   private val gruntDist = TaskKey[Int]("Task to run dist grunt")
 
   val yeomanSettings: Seq[Def.Setting[_]] = Seq(
-    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.7.3" intransitive()),
-
-    // Turn off play's internal less compiler
-    lessEntryPoints := Nil,
-
-    // Turn off play's internal javascript compiler
-    javascriptEntryPoints := Nil,
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.8.0" intransitive()),
 
     // Where does the UI live?
     yeomanDirectory <<= (baseDirectory in Compile) {

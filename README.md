@@ -40,9 +40,14 @@ How to use it?
 addSbtPlugin("com.tuplejump" % "sbt-yeoman" % "play-compatible-version")
 
 ```
-play-compatible-version = 0.7.1 for Play 2.3.0 and 0.6.4 for Play 2.2.x
 
-Note: support for Scala 2.11 is available from version 0.7.1 
+The play-compatible-version depends on the version of Playframework being used,
+
+| play framework version(s) | sbt-yeoman version | scala binary |
+|---------------------------|--------------------|--------------|
+| 2.2.x                     | 0.6.4              | 2.10         |
+| 2.3.x                     | 0.7.1              | 2.10, 2.11   | 
+| 2.4.x                     | 0.8.0              | 2.11         | 
 
 
 3) Import Yeoman classes in the project build adding the following import to `project/Build.scala`,
@@ -66,7 +71,7 @@ Using 0.6.4
 ```
 
 
-Using 0.7.1
+Using >= 0.7.1 
 
 ```scala
   val appSettings = Seq(version := appVersion, libraryDependencies ++= appDependencies) ++
@@ -212,7 +217,7 @@ Using 0.6.4
 
 ```
 
-Using 0.7.1
+Using >= 0.7.1
 
 ```
    val appSettings = Seq(version := appVersion, libraryDependencies ++= appDependencies) ++
@@ -230,7 +235,7 @@ Using 0.7.1
 
 * Look at the yo-demo project for details!
 
-Note: In 0.7.1, play-yeoman supports compilation of views from the yeoman directory but cannot recompile them when they are modified with the server running. You will need to stop the server and start it again.
+Note: Starting from 0.7.1, play-yeoman supports compilation of views from the yeoman directory but cannot recompile them when they are modified with the server running. You will need to stop the server and start it again.
 
 * If you use scala template support, you need to run grunt prior to compile else the template code will not be generated. This is not required if you execute run or stage directly since they have a dependency on grunt.  
 
