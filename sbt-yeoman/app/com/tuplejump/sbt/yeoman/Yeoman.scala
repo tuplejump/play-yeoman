@@ -65,22 +65,12 @@ object Yeoman extends Plugin {
       val result = runGrunt(base, gruntFile, isForceEnabled = isForceEnabled).exitValue()
       if (result == 0) {
         result
-      } else sys.error("grunt failed")
+      } else throw new Exception("grunt failed")
     },
 
-    dist := {
-      gruntDist.result.value match {
-        case Inc(i: Incomplete) => sys.error(i.getMessage)
-        case Value(v) => dist.value
-      }
-    },
+    dist <<= dist dependsOn gruntDist,
 
-    stage := {
-      gruntDist.result.value match {
-        case Inc(i: Incomplete) => sys.error(i.getMessage)
-        case Value(v) => stage.value
-      }
-    },
+    stage <<= stage dependsOn gruntDist,
 
     // Add the views to the dist
     unmanagedResourceDirectories in Assets <+= (yeomanDirectory in Compile)(base => base / "dist"),
