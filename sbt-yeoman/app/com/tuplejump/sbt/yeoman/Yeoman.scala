@@ -37,6 +37,7 @@ object Yeoman extends Plugin {
   val forceGrunt = SettingKey[Boolean]("key to enable/disable grunt tasks with force option")
 
   private val gruntDist = TaskKey[Int]("Task to run dist grunt")
+  private val gruntClean = TaskKey[Unit]("Task to run grunt clean")
 
   val yeomanSettings: Seq[Def.Setting[_]] = Seq(
     libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.8.0" intransitive()),
@@ -57,6 +58,17 @@ object Yeoman extends Plugin {
       runGrunt(base, gruntFile, Def.spaceDelimited("<arg>").parsed.toList, isForceEnabled).exitValue()
     },
 
+    gruntClean := {
+      val base = (yeomanDirectory in Compile).value
+      val gruntFile = (yeomanGruntfile in Compile).value
+      //stringToProcess("grunt " + (Def.spaceDelimited("<arg>").parsed).mkString(" ")).!!,
+      val isForceEnabled = (forceGrunt in Compile).value
+      val result = runGrunt(base, gruntFile, List("clean") ,isForceEnabled = isForceEnabled).exitValue()
+      if (result == 0) {
+        result
+      } else throw new Exception("grunt failed")
+    },
+
     gruntDist := {
       val base = (yeomanDirectory in Compile).value
       val gruntFile = (yeomanGruntfile in Compile).value
@@ -71,6 +83,8 @@ object Yeoman extends Plugin {
     dist <<= dist dependsOn gruntDist,
 
     stage <<= stage dependsOn gruntDist,
+
+    clean <<= clean dependsOn gruntClean,
 
     // Add the views to the dist
     unmanagedResourceDirectories in Assets <+= (yeomanDirectory in Compile)(base => base / "dist"),
