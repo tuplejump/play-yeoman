@@ -126,28 +126,35 @@ GET     /           com.tuplejump.playYeoman.Yeoman.redirectRoot(base="/ui/")
 
 ```
 
-6) Start play/sbt in your project folder,
+6) Create th ui directory for the angular application
+
+```
+user yo-demo> mkdir ui
+
+```
+
+7) Generate the yeoman application into the directory `ui`
+
+```
+user yo-demo/ui> yo angular
+
+```
+
+8) Start play/sbt in your project folder,
 
 ```
 user yo-demo> sbt
 
 ```
 
-7) Update the project to pull in the new dependencies,
+9) Update the project to pull in the new dependencies,
 
 ```
 [yo-demo] update
 
 ```
 
-8) Generate the yeoman application
-
-```
-[yo-demo] yo angular
-
-```
-
-9) Edit the Gruntfile.js to disable the Yeoman "connect" server as we will be using play to serve our application, This can be done by commenting out the relevant line in the server task towards the end of the file,
+10) Edit the Gruntfile.js to disable the Yeoman "connect" server as we will be using play to serve our application, This can be done by commenting out the relevant line in the server task towards the end of the file,
 
 ```
   grunt.registerTask('server', [
@@ -183,14 +190,14 @@ Note: If you are using Scala Templates support in play-yeoman 0.7.1, ensure that
     ]);
 ```
 
-10) Run your play application,
+11) Run your play application,
 
 ```
 [yo-demo] run
 
 ```
 
-11) Click on the liveReload plugin in the browser to connect and navigate to http://localhost:9000/ui/
+12) Click on the liveReload plugin in the browser to connect and navigate to http://localhost:9000/ui/
 
 
 ### Support for Scala Templates
