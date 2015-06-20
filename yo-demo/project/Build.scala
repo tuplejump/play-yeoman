@@ -1,7 +1,7 @@
 import sbt._
 import Keys._
 import com.tuplejump.sbt.yeoman.Yeoman
-import play.Play.autoImport._
+import play.sbt.Play.autoImport._
 import PlayKeys._
 
 object ApplicationBuild extends Build {
@@ -10,7 +10,7 @@ object ApplicationBuild extends Build {
   val appVersion = "2.0.0"
 
   val appDependencies = Seq(
-    // Add your project dependencies here,    
+    // Add your project dependencies here,
   )
 
   val appSettings = Seq(version := appVersion, libraryDependencies ++= appDependencies, scalaVersion := "2.11.6") ++
