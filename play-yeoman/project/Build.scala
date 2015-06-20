@@ -6,7 +6,7 @@ import PlayKeys._
 object ApplicationBuild extends Build {
 
   val appName = "play-yeoman"
-  val appVersion = "0.7.1"
+  val appVersion = "0.8.0"
 
   val appDependencies = Seq(
     // Add your project dependencies here,
@@ -18,11 +18,11 @@ object ApplicationBuild extends Build {
     version := appVersion,
     libraryDependencies ++= appDependencies,
     // Add your own project settings here
-    scalaVersion in Global := "2.10.4",
-    crossScalaVersions := Seq("2.10.4", "2.11.1"),
+    scalaVersion in Global := "2.11.6",
+    crossScalaVersions := Seq("2.11.6"),
     homepage := Some(url("https://github.com/tuplejump/play-yeoman")),
     organization := "com.tuplejump",
-    organizationName := "Tuplejump Software PVt. Ltd.",
+    organizationName := "Tuplejump Software Pvt. Ltd.",
     organizationHomepage := Some(new java.net.URL("http://www.tuplejump.com")),
     licenses := Seq("Apache License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
     publishMavenStyle := true,
@@ -44,6 +44,11 @@ object ApplicationBuild extends Build {
           <connection>scm:git:git@github.com:tuplejump/play-yeoman.git</connection>
         </scm>
         <developers>
+          <developer>
+            <id>eraoferrors</id>
+            <name>Shiti Saxena</name>
+            <url>https://twitter.com/Shiti</url>
+          </developer>
           <developer>
             <id>milliondreams</id>
             <name>Rohit Rai</name>

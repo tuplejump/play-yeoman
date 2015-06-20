@@ -1,0 +1,10 @@
+New in this release
+
++ Support Play 2.4.0
++ fixes #40 - Dependence on successful grunt build (if force is not enabled)
++ merged #60 - Grunt clean on sbt clean so we don't rely on stale templates
+
+This release wouldn't be possible without contributions from -
+
++ [Trey Hyde](https://github.com/treyhyde)
++ [Konstantin Nikiforov] (https://github.com/helllamer)

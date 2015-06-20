@@ -4,19 +4,15 @@ organization := "com.tuplejump"
 
 sbtPlugin := true
 
-version := "0.7.1"
+version := "0.8.0"
 
-sbtVersion in Global := "0.13.5"
-
-scalaVersion := "2.10.4"
-
-libraryDependencies += "org.scalatest" % "scalatest_2.10" % "1.9.1" % "test"
+sbtVersion in Global := "0.13.8"
 
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.3.0")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.4.0")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-web" % "1.0.0")
+addSbtPlugin("com.typesafe.sbt" % "sbt-web" % "1.0.2")
 
 licenses := Seq("Apache License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0"))
 
@@ -57,6 +53,11 @@ pomExtra := (
     <connection>scm:git:git@github.com:tuplejump/play-yeoman.git</connection>
   </scm>
   <developers>
+    <developer>
+      <id>eraoferrors</id>
+      <name>Shiti Saxena</name>
+      <url>https://twitter.com/Shiti</url>
+    </developer>
     <developer>
       <id>milliondreams</id>
       <name>Rohit Rai</name>
