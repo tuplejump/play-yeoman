@@ -107,6 +107,22 @@ play.Project.playJavaSettings ++ Yeoman.yeomanSettings
 
 ``` 
 
+Using 0.7.1 or greater
+
+```
+import com.tuplejump.sbt.yeoman.Yeoman
+
+name := "play-project"
+
+version := "1.0-SNAPSHOT"
+
+scalaVersion := "2.x.x"
+
+lazy val root = (project in file(".")).enablePlugins(PlayScala)
+
+Yeoman.yeomanSettings ++ Yeoman.withTemplates
+```
+
 5) Add yeoman routes to the project, appending the following line in conf/routes files,
 
 ```
