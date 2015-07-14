@@ -47,7 +47,7 @@ The play-compatible-version depends on the version of Playframework being used,
 |---------------------------|--------------------|--------------|
 | 2.2.x                     | 0.6.4              | 2.10         |
 | 2.3.x                     | 0.7.1              | 2.10, 2.11   | 
-| 2.4.x                     | 0.8.0              | 2.11         | 
+| 2.4.x                     | 0.8.1 (support for injected routes generator)              | 2.11         |
 
 
 3) Import Yeoman classes in the project build adding the following import to `project/Build.scala`,
@@ -134,11 +134,29 @@ GET     /ui         com.tuplejump.playYeoman.Yeoman.index
 
 ```
 
+If using, injected routes generator (0.8.1 onwards),
+
+```
+
+GET     /ui         @com.tuplejump.playYeoman.Yeoman.index
+
+->	    /ui/        yeoman.Routes
+
+
+```
+
 Optionally, you can also redirect your root url,
 
 ```
 
 GET     /           com.tuplejump.playYeoman.Yeoman.redirectRoot(base="/ui/")
+
+```
+
+If using, injected routes generator (0.8.1 onwards),
+```
+
+GET     /           @com.tuplejump.playYeoman.Yeoman.redirectRoot(base="/ui/")
 
 ```
 
@@ -249,7 +267,7 @@ Using >= 0.7.1
 
 * Once that is done play will compile the templates from yeoman directory too, and you can use them in your controllers. This helps you keep all your UI files together under the yeoman directory ('ui' by default)
 
-* Look at the yo-demo project for details!
+* Look at the yo-demo and yo-injection-demo projects for details!
 
 Note: Starting from 0.7.1, play-yeoman supports compilation of views from the yeoman directory but cannot recompile them when they are modified with the server running. You will need to stop the server and start it again.
 

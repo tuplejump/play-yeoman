@@ -1,0 +1,45 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+## OLD HOME PAGE
+#GET        /oldhome                    @controllers.Application.index
+#
+#GET        /api/somejson               @controllers.Application.json(keyword: String)
+#
+#
+## Home page
+#GET        /                           @controllers.YeomanController.redirectRoot(base="/ui/")
+#
+## Map static resources from the /public folder to the /assets URL path
+#GET        /assets/*file               @controllers.Assets.at(path="/public", file)
+#
+#GET        /ui/views/templ.html        @controllers.Application.serveTemplate
+#
+#GET        /ui                         @controllers.YeomanController.index
+#
+#->         /ui/                        yeoman.Routes
+#
+#GET        /tdemo                      @controllers.Application.templateDemo
+#
+
+GET        /oldhome                    @controllers.Application.index
+
+GET        /api/somejson               @controllers.Application.json(keyword: String)
+
+
+# Home page
+GET        /                           @com.tuplejump.playYeoman.Yeoman.redirectRoot(base="/ui/")
+
+# Map static resources from the /public folder to the /assets URL path
+GET        /assets/*file               @controllers.Assets.at(path="/public", file)
+
+GET        /ui/views/templ.html        @controllers.Application.serveTemplate
+
+GET        /ui                         @com.tuplejump.playYeoman.Yeoman.index
+
+->         /ui/                        yeoman.Routes
+
+GET        /tdemo                      @controllers.Application.templateDemo
+
+

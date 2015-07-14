@@ -1,12 +1,11 @@
+import play.sbt.PlayScala
+import sbt.Keys._
 import sbt._
-import Keys._
-import play.Play.autoImport._
-import PlayKeys._
 
 object ApplicationBuild extends Build {
 
   val appName = "play-yeoman"
-  val appVersion = "0.8.0"
+  val appVersion = "0.8.1"
 
   val appDependencies = Seq(
     // Add your project dependencies here,
@@ -14,7 +13,7 @@ object ApplicationBuild extends Build {
     //anorm
   )
 
-  val main = Project(appName, file(".")).enablePlugins(play.PlayScala).settings(
+  val main = Project(appName, file(".")).enablePlugins(PlayScala).settings(
     version := appVersion,
     libraryDependencies ++= appDependencies,
     // Add your own project settings here

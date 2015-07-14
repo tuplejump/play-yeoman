@@ -24,7 +24,7 @@ import PlayKeys._
 import com.typesafe.sbt.web.Import._
 
 import com.typesafe.sbt.packager.Keys._
-import play.PlayRunHook
+import play.sbt.PlayRunHook
 import play.twirl.sbt.Import._
 
 object Yeoman extends Plugin {
@@ -40,7 +40,7 @@ object Yeoman extends Plugin {
   private val gruntClean = TaskKey[Unit]("Task to run grunt clean")
 
   val yeomanSettings: Seq[Def.Setting[_]] = Seq(
-    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.8.0" intransitive()),
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.8.1" intransitive()),
 
     // Where does the UI live?
     yeomanDirectory <<= (baseDirectory in Compile) {
@@ -63,7 +63,7 @@ object Yeoman extends Plugin {
       val gruntFile = (yeomanGruntfile in Compile).value
       //stringToProcess("grunt " + (Def.spaceDelimited("<arg>").parsed).mkString(" ")).!!,
       val isForceEnabled = (forceGrunt in Compile).value
-      val result = runGrunt(base, gruntFile, List("clean") ,isForceEnabled = isForceEnabled).exitValue()
+      val result = runGrunt(base, gruntFile, List("clean"), isForceEnabled = isForceEnabled).exitValue()
       if (result == 0) {
         result
       } else throw new Exception("grunt failed")
@@ -142,18 +142,20 @@ object Yeoman extends Plugin {
     if (System.getProperty("os.name").startsWith("Windows")) {
       val process: ProcessBuilder = Process("cmd" :: "/c" :: "grunt" :: "--gruntfile=" + gruntFile :: arguments, base)
       println(s"Will run: ${process.toString} in ${base.getPath}")
-      process.run
+      process.run()
     } else {
       val process: ProcessBuilder = Process("grunt" :: "--gruntfile=" + gruntFile :: arguments, base)
       println(s"Will run: ${process.toString} in ${base.getPath}")
-      process.run
+      process.run()
     }
   }
 
   import scala.language.postfixOps
 
   private def cmd(name: String, base: File): Command = {
-    if (!base.exists()) (base.mkdirs())
+    if (!base.exists()) {
+      base.mkdirs()
+    }
     Command.args(name, "<" + name + "-command>") {
       (state, args) =>
         if (System.getProperty("os.name").startsWith("Windows")) {
@@ -177,7 +179,7 @@ object Yeoman extends Plugin {
         }
 
         override def afterStopped(): Unit = {
-          process.map(p => p.destroy())
+          process.foreach(p => p.destroy())
           process = None
         }
       }

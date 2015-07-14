@@ -41,12 +41,23 @@ object Yeoman extends Controller {
 
 }
 
+/**
+ * Class added to support injected route generator (Play 2.4 onwards)
+ */
+class Yeoman extends Controller {
+  def index = Yeoman.index
+
+  def redirectRoot(base: String = "/ui/") = Yeoman.redirectRoot(base)
+}
+
 object DevAssets extends Controller {
   // paths to the grunt compile directory or else the application directory, in order of importance
   val runtimeDirs = Play.configuration.getStringList("yeoman.devDirs")
   val basePaths: List[java.io.File] = runtimeDirs match {
     case Some(dirs) => dirs.asScala.map(Play.application.getFile _).toList
-    case None => List(Play.application.getFile("ui/.tmp"), Play.application.getFile("ui/app"))
+    case None => List(Play.application.getFile("ui/.tmp"), Play.application.getFile("ui/app"),
+      //added ui to defaults since the newer projects have bower_components in ui directory instead of ui/app/components
+      Play.application.getFile("ui"))
   }
 
   /**
