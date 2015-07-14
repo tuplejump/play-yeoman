@@ -1,0 +1,4 @@
+New in this release
+
++ Support for using Play's injected routes generator.
++ updated default value for devDirs to include 'ui'. (related to #78)

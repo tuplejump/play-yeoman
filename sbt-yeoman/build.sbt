@@ -4,7 +4,7 @@ organization := "com.tuplejump"
 
 sbtPlugin := true
 
-version := "0.8.0"
+version := "0.8.1"
 
 sbtVersion in Global := "0.13.8"
 
@@ -22,7 +22,6 @@ organizationName := "Tuplejump Software Pvt. Ltd."
 
 organizationHomepage := Some(url("http://www.tuplejump.com"))
 
-// Note: These settings are defaults for activator, and reorganize your source directories.
 Seq(
   scalaSource in Compile <<= baseDirectory / "app",
   javaSource in Compile <<= baseDirectory / "app",

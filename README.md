@@ -47,7 +47,7 @@ The play-compatible-version depends on the version of Playframework being used,
 |---------------------------|--------------------|--------------|
 | 2.2.x                     | 0.6.4              | 2.10         |
 | 2.3.x                     | 0.7.1              | 2.10, 2.11   | 
-| 2.4.x                     | 0.8.0              | 2.11         | 
+| 2.4.x                     | 0.8.1 (support for injected routes generator)              | 2.11         |
 
 
 3) Import Yeoman classes in the project build adding the following import to `project/Build.scala`,
@@ -107,6 +107,22 @@ play.Project.playJavaSettings ++ Yeoman.yeomanSettings
 
 ``` 
 
+Using 0.7.1 or greater
+
+```
+import com.tuplejump.sbt.yeoman.Yeoman
+
+name := "play-project"
+
+version := "1.0-SNAPSHOT"
+
+scalaVersion := "2.x.x"
+
+lazy val root = (project in file(".")).enablePlugins(PlayScala)
+
+Yeoman.yeomanSettings ++ Yeoman.withTemplates
+```
+
 5) Add yeoman routes to the project, appending the following line in conf/routes files,
 
 ```
@@ -125,6 +141,9 @@ Optionally, you can also redirect your root url,
 GET     /           com.tuplejump.playYeoman.Yeoman.redirectRoot(base="/ui/")
 
 ```
+
+If using, Play's injected routes generator, prefixing the route with `@` will work except for `yeoman.Routes`. It can be used as is.
+
 
 6) Start play/sbt in your project folder,
 
@@ -233,7 +252,7 @@ Using >= 0.7.1
 
 * Once that is done play will compile the templates from yeoman directory too, and you can use them in your controllers. This helps you keep all your UI files together under the yeoman directory ('ui' by default)
 
-* Look at the yo-demo project for details!
+* Look at the yo-demo and yo-injection-demo projects for details!
 
 Note: Starting from 0.7.1, play-yeoman supports compilation of views from the yeoman directory but cannot recompile them when they are modified with the server running. You will need to stop the server and start it again.
 
@@ -253,7 +272,6 @@ For this purpose play-yeoman provides 2 settings that you can use in you play pr
 1) yeoman.distDir - This is a String that takes the location where yeoman/grunt build puts your web app distribution. This location will be used by play-yeoman when you are running in production i.e. after dist/stage.
 
 2) yeoman.devDirs - This is a List of String that takes a list of locations where play-yeoman should look for files in development mode i.e. when run using sbt run.
-
 
 Note: Starting from 0.7.1, it is possible to disable force option on execution of grunt tasks. This can be done by adding the following to the application build settings,
 
