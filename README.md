@@ -134,17 +134,6 @@ GET     /ui         com.tuplejump.playYeoman.Yeoman.index
 
 ```
 
-If using, injected routes generator (0.8.1 onwards),
-
-```
-
-GET     /ui         @com.tuplejump.playYeoman.Yeoman.index
-
-->	    /ui/        yeoman.Routes
-
-
-```
-
 Optionally, you can also redirect your root url,
 
 ```
@@ -153,12 +142,8 @@ GET     /           com.tuplejump.playYeoman.Yeoman.redirectRoot(base="/ui/")
 
 ```
 
-If using, injected routes generator (0.8.1 onwards),
-```
+If using, Play's injected routes generator, prefixing the route with `@` will work except for `yeoman.Routes`. It can be used as is.
 
-GET     /           @com.tuplejump.playYeoman.Yeoman.redirectRoot(base="/ui/")
-
-```
 
 6) Start play/sbt in your project folder,
 
@@ -287,7 +272,6 @@ For this purpose play-yeoman provides 2 settings that you can use in you play pr
 1) yeoman.distDir - This is a String that takes the location where yeoman/grunt build puts your web app distribution. This location will be used by play-yeoman when you are running in production i.e. after dist/stage.
 
 2) yeoman.devDirs - This is a List of String that takes a list of locations where play-yeoman should look for files in development mode i.e. when run using sbt run.
-
 
 Note: Starting from 0.7.1, it is possible to disable force option on execution of grunt tasks. This can be done by adding the following to the application build settings,
 
