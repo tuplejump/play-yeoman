@@ -55,7 +55,7 @@ pomExtra := (
     <developer>
       <id>eraoferrors</id>
       <name>Shiti Saxena</name>
-      <url>https://twitter.com/Shiti</url>
+      <url>https://twitter.com/eraoferrors</url>
     </developer>
     <developer>
       <id>milliondreams</id>
