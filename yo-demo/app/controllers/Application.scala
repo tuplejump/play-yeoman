@@ -4,7 +4,7 @@ import play.api.mvc._
 import play.api.libs.json._
 import play.twirl.api.Html
 
-object Application extends Controller {
+class Application extends Controller {
 
   def index = Action {
     Ok(views.html.index("Your new application is ready."))
@@ -12,7 +12,7 @@ object Application extends Controller {
 
   def templateDemo = Action {
     Ok(views.html.demo("Scala template in Angular")
-      (Html("This is a play scala template in angular views folder which is compiled and used inplace!</div>"))
+      (Html("<div>This is a play scala template in angular views folder which is compiled and used inplace!</div>"))
     )
   }
 

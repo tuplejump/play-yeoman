@@ -1,15 +1,20 @@
 package com.tuplejump.playYeoman
 
+import java.io.File
+import javax.inject.Inject
+
+import controllers.Assets
 import play.api._
 import play.api.mvc._
-import controllers.Assets
-import play.api.Play.current
-import java.io.File
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.collection.JavaConverters._
 
-object Yeoman extends Controller {
+import scala.collection.JavaConverters._
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+
+class Yeoman @Inject() (environment: play.api.Environment,
+                        devAssets: DevAssets) extends Controller {
+
+  def at(file: String): Action[AnyContent] = atHandler(file)
 
   def index = Action.async {
     request =>
@@ -20,6 +25,9 @@ object Yeoman extends Controller {
       }
   }
 
+  def assetHandler(file: String): Action[AnyContent] = {
+    Assets.at("/public", file)
+  }
 
   def redirectRoot(base: String = "/ui/") = Action {
     request =>
@@ -30,34 +38,21 @@ object Yeoman extends Controller {
       }
   }
 
-  def assetHandler(file: String): Action[AnyContent] = {
-    Assets.at("/public", file)
-  }
-
-  lazy val atHandler: String => Action[AnyContent] = if (Play.isProd) assetHandler(_: String) else DevAssets.assetHandler(_: String)
-
-  def at(file: String): Action[AnyContent] = atHandler(file)
-
+  lazy val atHandler: String => Action[AnyContent] = if (environment.mode==Mode.Prod) {
+    assetHandler(_: String)
+  } else devAssets.assetHandler(_: String)
 
 }
 
-/**
- * Class added to support injected route generator (Play 2.4 onwards)
- */
-class Yeoman extends Controller {
-  def index = Yeoman.index
-
-  def redirectRoot(base: String = "/ui/") = Yeoman.redirectRoot(base)
-}
-
-object DevAssets extends Controller {
+class DevAssets @Inject() (environment: play.api.Environment,
+                           configuration: play.api.Configuration) extends Controller {
   // paths to the grunt compile directory or else the application directory, in order of importance
-  val runtimeDirs = Play.configuration.getStringList("yeoman.devDirs")
+  val runtimeDirs = configuration.getStringList("yeoman.devDirs")
   val basePaths: List[java.io.File] = runtimeDirs match {
-    case Some(dirs) => dirs.asScala.map(Play.application.getFile _).toList
-    case None => List(Play.application.getFile("ui/.tmp"), Play.application.getFile("ui/app"),
+    case Some(dirs) => dirs.asScala.map(environment.getFile _).toList
+    case None => List(environment.getFile("ui/.tmp"), environment.getFile("ui/app"),
       //added ui to defaults since the newer projects have bower_components in ui directory instead of ui/app/components
-      Play.application.getFile("ui"))
+      environment.getFile("ui"))
   }
 
   /**

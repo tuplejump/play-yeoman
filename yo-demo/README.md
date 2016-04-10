@@ -1,4 +1,4 @@
-This application is to demo the different features supported by the plugin.
+This application is to demo the different features supported by the plugin using injected routes generator(Play 2.5).
 
 Start sbt and run the following -
 

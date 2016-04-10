@@ -48,6 +48,7 @@ The play-compatible-version depends on the version of Playframework being used,
 | 2.2.x                     | 0.6.4              | 2.10         |
 | 2.3.x                     | 0.7.1              | 2.10, 2.11   | 
 | 2.4.x                     | 0.8.1 (support for injected routes generator)              | 2.11         |
+| 2.5.x                     | 0.9.0              | 2.11         |
 
 
 3) Import Yeoman classes in the project build adding the following import to `project/Build.scala`,
@@ -84,6 +85,17 @@ Using >= 0.7.1
 
 ```
 
+Using >= 0.9.0 (auto-plugin)
+
+```scala
+  val appSettings = Seq(version := appVersion, libraryDependencies ++= appDependencies) ++
+    Yeoman.yeomanSettings 
+
+  val main = Project(appName, file(".")).enablePlugins(play.PlayScala,Yeoman).settings(
+    // Add your own project settings here
+    appSettings: _*
+  )
+```
 
 Note: If you're using build.sbt instead of the full scala build, you need to place the 2 additions above into `build.sbt` as follows:
 
@@ -123,6 +135,12 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 Yeoman.yeomanSettings ++ Yeoman.withTemplates
 ```
 
+Using >= 0.9.0 (auto-plugin)
+
+```scala
+lazy val root = (project in file(".")).enablePlugins(PlayScala,Yeoman)
+```
+
 5) Add yeoman routes to the project, appending the following line in conf/routes files,
 
 ```
@@ -142,8 +160,8 @@ GET     /           com.tuplejump.playYeoman.Yeoman.redirectRoot(base="/ui/")
 
 ```
 
-If using, Play's injected routes generator, prefixing the route with `@` will work except for `yeoman.Routes`. It can be used as is.
-
+Note: If using 0.8.1 and Play's injected routes generator, prefixing the route with `@` will work except for `yeoman.Routes`. It can be used as is. 
+This is specific to version 0.8.1. From version 0.9.0, `InjectedRoutesGenerator` is default.
 
 6) Start play/sbt in your project folder,
 
@@ -250,18 +268,27 @@ Using >= 0.7.1
 
 ```
 
+Using >= 0.9.0
+
+```
+lazy val root = (project in file(".")).enablePlugins(PlayScala,Yeoman)
+
+Yeoman.withTemplates
+```
+
 * Once that is done play will compile the templates from yeoman directory too, and you can use them in your controllers. This helps you keep all your UI files together under the yeoman directory ('ui' by default)
 
-* Look at the yo-demo and yo-injection-demo projects for details!
+* Look at the yo-demo!
 
-Note: Starting from 0.7.1, play-yeoman supports compilation of views from the yeoman directory but cannot recompile them when they are modified with the server running. You will need to stop the server and start it again.
+For versions 0.7.1 to 0.8.1, you need to run `grunt` prior to compile else the template code will not be generated. This is not required if you execute `dist` or `stage` directly since they have a dependency on grunt. 
 
-* If you use scala template support, you need to run grunt prior to compile else the template code will not be generated. This is not required if you execute run or stage directly since they have a dependency on grunt.  
+From 0.9.0 onwards, the views in yeoman directory are automatically compiled to generate template code.
 
 ### Taking it to production
 
 From 0.6.3, play-yeoman updates Play's 'stage' and 'dist' tasks to depend on the grunt task. Thus you don't need any additional step putting this in production. when you run either `sbt dist` or `sbt stage` it will automatically run grunt as part of the build!
 
+From 0.9.0, a boolean key `runGruntInDist` has been provided for helping with Heroku. It can be set to `false` and the yeoman distDirectory should be copied manually.
 
 ### Configuring the yeoman directory paths for Play
 

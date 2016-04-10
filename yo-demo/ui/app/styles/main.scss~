@@ -1,5 +1,0 @@
-@import "compass_twitter_bootstrap";
-
-.hero-unit{
-  background-color: #999;
-}

@@ -1,0 +1,6 @@
+New in this release
+
++ Support for using Play 2.5.
++ Auto-plugin
++ additional config `runGruntInDist` (related to #87)
++ `compile` depends on `grunt` when scala Templates are enabled
