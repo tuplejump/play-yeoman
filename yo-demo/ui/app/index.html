@@ -10,7 +10,8 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css styles/vendor.css -->
+    <!-- build:css(.) styles/vendor.css -->
+    <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.css">
     <!-- bower:css -->
     <!-- endbower -->
     <!-- endbuild -->
@@ -19,13 +20,13 @@
     <!-- endbuild -->
   </head>
   <body ng-app="uiApp">
-    <!--[if lt IE 7]>
+    <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
     <div class="header">
         <ul class="nav nav-pills pull-right">
-            <li class="active"><a ng-href="#">Angular Page</a></li>
+            <li class="active"><a ng-href="#/">Angular Page</a></li>
             <li><a ng-href="#/myhome">Angular View</a></li>
             <li><a ng-href="#/templ">Play Template</a></li>
         </ul>
@@ -35,31 +36,17 @@
     <!-- Add your site or application content here -->
     <div class="container" ng-view=""></div>
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-     <script>
-       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-       ga('create', 'UA-XXXXX-X');
-       ga('send', 'pageview');
-    </script>
-
-    <!--[if lt IE 9]>
-    <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/json3/lib/json3.min.js"></script>
-    <![endif]-->
-
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="components/es5-shim/es5-shim.js"></script>
+    <script src="components/jquery/dist/jquery.js"></script>
     <script src="components/angular/angular.js"></script>
-    <script src="components/json3/lib/json3.min.js"></script>
-    <script src="components/angular-resource/angular-resource.js"></script>
+    <script src="components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="components/angular-animate/angular-animate.js"></script>
     <script src="components/angular-cookies/angular-cookies.js"></script>
-    <script src="components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="components/angular-resource/angular-resource.js"></script>
     <script src="components/angular-route/angular-route.js"></script>
+    <script src="components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="components/angular-touch/angular-touch.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

@@ -4,13 +4,13 @@ organization := "com.tuplejump"
 
 sbtPlugin := true
 
-version := "0.8.1"
+version := "0.9.0"
 
-sbtVersion in Global := "0.13.8"
+sbtVersion in Global := "0.13.11"
 
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.4.0")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.5.0")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-web" % "1.0.2")
 
