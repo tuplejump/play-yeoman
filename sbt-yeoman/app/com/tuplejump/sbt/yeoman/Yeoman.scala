@@ -24,6 +24,7 @@ import play.sbt.PlayRunHook
 import play.twirl.sbt.Import.TwirlKeys
 import sbt.Keys._
 import sbt._
+import scala.sys.process._
 
 object Yeoman extends AutoPlugin {
 
@@ -58,33 +59,30 @@ object Yeoman extends AutoPlugin {
     } else throw new Exception("grunt failed")
   }
 
-  lazy val withTemplates = {
-    Seq(sourceDirectories in TwirlKeys.compileTemplates in Compile ++= Seq(yeomanDirectory.value / "dist"),
-      yeomanExcludes <<= (yeomanDirectory) (yd => Seq(
-        yd + "/dist/components/",
-        yd + "/dist/images/",
-        yd + "/dist/styles/"
-      )),
-      excludeFilter in unmanagedSources <<=
-        (excludeFilter in unmanagedSources, yeomanExcludes) {
-          (currentFilter: FileFilter, ye) =>
-            currentFilter || new FileFilter {
-              def accept(pathname: File): Boolean = {
-                (true /: ye.map(s => pathname.getAbsolutePath.startsWith(s))) (_ && _)
-              }
-            }
-        },
-      (compile in Compile) <<= (compile in Compile) dependsOn gruntDist
-    )
-  }
+//  lazy val withTemplates = {
+//    Seq(sourceDirectories in TwirlKeys.compileTemplates in Compile ++= Seq(yeomanDirectory.value / "dist"),
+//      yeomanExcludes := Seq(
+//        yeomanDirectory.value + "/dist/components/",
+//        yeomanDirectory.value + "/dist/images/",
+//        yeomanDirectory.value + "/dist/styles/"
+//      ),
+//      excludeFilter in unmanagedSources ~=
+//        (currentFilter => {
+//            currentFilter || new FileFilter {
+//              def accept(pathname: File): Boolean = {
+//                yeomanExcludes.isEmpty || yeomanExcludes.map(s => pathname.getAbsolutePath.startsWith(s)).reduceLeft(_ && _)
+//              }
+//            }
+//        }),
+//      (compile in Compile) dependsOn gruntDist
+//    )
+//  }
 
   override def projectSettings: Seq[_root_.sbt.Def.Setting[_]] = super.projectSettings ++ Seq(
-    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.9.0" intransitive()),
+    libraryDependencies ++= Seq("com.tuplejump" %% "play-yeoman" % "0.9.1" intransitive()),
 
     // Where does the UI live?
-    yeomanDirectory <<= (baseDirectory in Compile) {
-      _ / "ui"
-    },
+    yeomanDirectory := (baseDirectory in Compile).value / "ui",
 
     yeomanGruntfile := "Gruntfile.js",
 
@@ -97,28 +95,19 @@ object Yeoman extends AutoPlugin {
       runGrunt(base, gruntFile, isForceEnabled, Def.spaceDelimited("<arg>").parsed.toList).exitValue()
     },
 
-    dist <<= dist dependsOn gruntDist,
+    dist := (dist dependsOn gruntDist).value,
 
-    stage <<= stage dependsOn gruntDist,
+    stage := (stage dependsOn gruntDist).value,
 
-    clean <<= clean dependsOn gruntClean,
+    clean := (clean dependsOn gruntClean).value,
 
     // Add the views to the dist
-    unmanagedResourceDirectories in Assets <+= (yeomanDirectory in Compile) (base => base / "dist"),
+    unmanagedResourceDirectories in Assets += (yeomanDirectory in Compile).value / "dist",
 
-    playRunHooks <+= (yeomanDirectory, yeomanGruntfile, forceGrunt).map {
-      (base, gruntFile, isForceEnabled) => Grunt(base, gruntFile, isForceEnabled)
-    },
+    playRunHooks += Grunt(yeomanDirectory.value, yeomanGruntfile.value, forceGrunt.value),
 
     // Allow all the specified commands below to be run within sbt
-    commands <++= yeomanDirectory {
-      base =>
-        Seq(
-          "bower",
-          "yo",
-          "npm"
-        ).map(cmd(_, base))
-    },
+    commands ++=  Seq("bower", "yo", "npm").map(v => cmd(v, yeomanDirectory.value)),
     runGruntInDist := true
   )
 
@@ -138,15 +127,13 @@ object Yeoman extends AutoPlugin {
       println("'force' not enabled")
 
 
-    if (System.getProperty("os.name").startsWith("Windows")) {
-      val process: ProcessBuilder = Process("cmd" :: "/c" :: "grunt" :: "--gruntfile=" + gruntFile :: arguments, base)
-      println(s"Will run: ${process.toString} in ${base.getPath}")
-      process.run()
+    val process = if (System.getProperty("os.name").startsWith("Windows")) {
+      Process("cmd" :: "/c" :: "grunt" :: "--gruntfile=" + gruntFile :: arguments, base)
     } else {
-      val process: ProcessBuilder = Process("grunt" :: "--gruntfile=" + gruntFile :: arguments, base)
-      println(s"Will run: ${process.toString} in ${base.getPath}")
-      process.run()
+      Process("grunt" :: "--gruntfile=" + gruntFile :: arguments, base)
     }
+    println(s"Will run: ${process.toString} in ${base.getPath}")
+    process.run()
   }
 
   import scala.language.postfixOps

@@ -45,7 +45,8 @@ class Yeoman @Inject() (environment: play.api.Environment,
 }
 
 class DevAssets @Inject() (environment: play.api.Environment,
-                           configuration: play.api.Configuration) extends Controller {
+                           configuration: play.api.Configuration,
+                           implicit val mimeTypes: play.api.http.FileMimeTypes) extends Controller {
   // paths to the grunt compile directory or else the application directory, in order of importance
   val runtimeDirs = configuration.getStringList("yeoman.devDirs")
   val basePaths: List[java.io.File] = runtimeDirs match {
