@@ -4,15 +4,20 @@ organization := "com.tuplejump"
 
 sbtPlugin := true
 
-version := "0.9.0"
+version := "0.10.0"
 
-sbtVersion in Global := "0.13.11"
+scalaVersion := "2.12.4"
+
+sbtVersion in Global := "1.0.2"
+
+//scalaCompilerBridgeSource :=
+//  ("org.scala-sbt" % "compiler-interface" % "0.13.15" % "component").sources
 
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.5.0")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.6.6")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-web" % "1.0.2")
+addSbtPlugin("com.typesafe.sbt" % "sbt-web" % "1.4.3")
 
 licenses := Seq("Apache License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0"))
 
@@ -23,20 +28,20 @@ organizationName := "Tuplejump Software Pvt. Ltd."
 organizationHomepage := Some(url("http://www.tuplejump.com"))
 
 Seq(
-  scalaSource in Compile <<= baseDirectory / "app",
-  javaSource in Compile <<= baseDirectory / "app",
-  sourceDirectory in Compile <<= baseDirectory / "app",
-  scalaSource in Test <<= baseDirectory / "test",
-  javaSource in Test <<= baseDirectory / "test",
-  sourceDirectory in Test <<= baseDirectory / "test",
-  resourceDirectory in Compile <<= baseDirectory / "conf"
+  scalaSource in Compile := (baseDirectory.value / "app"),
+  javaSource in Compile := (baseDirectory.value / "app"),
+  sourceDirectory in Compile := (baseDirectory.value / "app"),
+  scalaSource in Test := (baseDirectory.value / "test"),
+  javaSource in Test := (baseDirectory.value / "test"),
+  sourceDirectory in Test := (baseDirectory.value / "test"),
+  resourceDirectory in Compile := (baseDirectory.value / "conf")
 )
 
 publishMavenStyle := true
 
-publishTo <<= version { (v: String) =>
+publishTo := {
   val nexus = "https://oss.sonatype.org/"
-  if (v.trim.endsWith("SNAPSHOT"))
+  if (isSnapshot.value)
     Some("snapshots" at nexus + "content/repositories/snapshots")
   else
     Some("releases"  at nexus + "service/local/staging/deploy/maven2")

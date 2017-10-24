@@ -1,23 +1,22 @@
 val appName = "play-yeoman"
-val appVersion = "0.9.0"
+val appVersion = "0.10.0"
 
 val main = Project(appName, file(".")).enablePlugins(PlayScala).settings(
   version := appVersion,
-  scalaVersion in Global := "2.11.7",
-  //    crossScalaVersions := Seq("2.11.7"),
+  scalaVersion in Global := "2.12.4",
+  sbtVersion in Global := "1.0.2",
   homepage := Some(url("https://github.com/tuplejump/play-yeoman")),
   organization := "com.tuplejump",
   organizationName := "Tuplejump Software Pvt. Ltd.",
   organizationHomepage := Some(new java.net.URL("http://www.tuplejump.com")),
   licenses := Seq("Apache License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
   publishMavenStyle := true,
-  publishTo <<= version {
-    (v: String) =>
-      val nexus = "https://oss.sonatype.org/"
-      if (v.trim.endsWith("SNAPSHOT"))
-        Some("snapshots" at nexus + "content/repositories/snapshots")
-      else
-        Some("releases" at nexus + "service/local/staging/deploy/maven2")
+  publishTo := {
+    val nexus = "https://oss.sonatype.org/"
+    if (isSnapshot.value)
+      Some("snapshots" at nexus + "content/repositories/snapshots")
+    else
+      Some("releases"  at nexus + "service/local/staging/deploy/maven2")
   },
   publishArtifact in Test := false,
   pomIncludeRepository := {
