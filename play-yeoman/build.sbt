@@ -1,5 +1,5 @@
 val appName = "play-yeoman"
-val appVersion = "0.9.1"
+val appVersion = "0.10.0"
 
 val main = Project(appName, file(".")).enablePlugins(PlayScala).settings(
   version := appVersion,
