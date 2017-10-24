@@ -49,6 +49,7 @@ The play-compatible-version depends on the version of Playframework being used,
 | 2.3.x                     | 0.7.1              | 2.10, 2.11   | 
 | 2.4.x                     | 0.8.1 (support for injected routes generator)              | 2.11         |
 | 2.5.x                     | 0.9.0              | 2.11         |
+| 2.6.x                     | 0.10.0             | 2.12         |
 
 
 3) Import Yeoman classes in the project build adding the following import to `project/Build.scala`,
